@@ -38,4 +38,5 @@ Route::post('users/edit/{id}', 'UserController@update')->name('users.update');
 Route::post('users/destroy/{id}', 'UserController@destroy')->name('users.destroy');
 Route::post('users/search', 'UserController@search')->name('users.search');
 
-
+// test route for service_dao_structure
+Route::get('/test', TestController::class . '@getList');
