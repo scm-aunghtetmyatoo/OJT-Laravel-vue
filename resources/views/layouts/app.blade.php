@@ -34,7 +34,7 @@
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
                         <li class="nav-item">
-                            <a class="nav-link" href="">Users</a>
+                            <a class="nav-link" href="{{ url('users') }}">Users</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="">User</a>

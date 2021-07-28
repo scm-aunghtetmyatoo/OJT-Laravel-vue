@@ -22,7 +22,11 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::resource('posts', 'PostController');
-// Route::get('posts/create', 'PostController@create');
-// Route::post('posts/create', 'PostController@store');
-// Route::post('posts/edit', 'PostController@edit');
+
+Route::get('users', 'UserController@index')->name('users.index');
+Route::get('users/create', 'UserController@create')->name('users.create');
+Route::post('users/create', 'UserController@store')->name('users.store');
+Route::get('users/edit/{id}', 'UserController@edit')->name('users.edit');
+Route::post('users/edit/{id}', 'UserController@update')->name('users.update');
+Route::post('users/destroy/{id}', 'UserController@destroy')->name('users.destroy');
 
