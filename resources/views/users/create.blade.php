@@ -8,7 +8,7 @@
                 <div class="card-header">{{ __('Add') }}</div>
 
                 <div class="card-body">
-                    <form method="POST" action="{{ route('users.store') }}" enctype="multipart/form-data">
+                    <form method="POST" action="{{ route('users.confirm') }}" enctype="multipart/form-data">
                         @csrf
 
                         <div class="form-group row">
@@ -42,8 +42,14 @@
                         <div class="form-group row">
                             <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
 
-                            <div class="col-md-6">
+                            <div class="col-md-6 input-group">
                                 <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
+
+                                <div class="input-group-append">
+                                    <div class="input-group-text">
+                                        <span toggle="#password" class="fa fa-fw fa-eye field-icon toggle-password"></span>
+                                    </div>
+                                </div>
 
                                 @error('password')
                                     <span class="invalid-feedback" role="alert">
@@ -56,8 +62,14 @@
                         <div class="form-group row">
                             <label for="password-confirm" class="col-md-4 col-form-label text-md-right">{{ __('Confirm Password') }}</label>
 
-                            <div class="col-md-6">
+                            <div class="col-md-6 input-group">
                                 <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
+
+                                <div class="input-group-append">
+                                    <div class="input-group-text">
+                                        <span toggle="#password-confirm" class="fa fa-fw fa-eye field-icon toggle-password"></span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
@@ -134,7 +146,14 @@
                         <div class="form-group row mb-0">
                             <div class="col-md-6 offset-md-4">
                                 <button type="submit" class="btn btn-primary">
-                                    {{ __('Add') }}
+                                    {{ __('Confirm') }}
+                                </button>
+                            </div>
+                        </div>
+                        <div class="form-group row mb-0">
+                            <div class="col-md-6 offset-md-4">
+                                <button type="reset" class="btn btn-primary">
+                                    {{ __('Clear') }}
                                 </button>
                             </div>
                         </div>
@@ -144,4 +163,16 @@
         </div>
     </div>
 </div>
+<script>
+    $(".toggle-password").click(function() {
+
+    $(this).toggleClass("fa-eye fa-eye-slash");
+    var input = $($(this).attr("toggle"));
+    if (input.attr("type") == "password") {
+    input.attr("type", "text");
+    } else {
+    input.attr("type", "password");
+    }
+    });
+</script>
 @endsection

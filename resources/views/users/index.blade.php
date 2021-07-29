@@ -3,7 +3,14 @@
 @section('content')
 
 <div class="container">
-<a href="{{ route('users.create') }}" class="btn btn-success mb-4">Add User</a>
+    <div class="mb-4 form-inline">
+        <form action="{{ route('users.search') }}" method="POST" class="form-inline mr-3">
+            @csrf
+            <input type="text" name="search" class="form-control mr-3" required />
+            <button class="btn btn-success" type="submit">Search</button>
+        </form>
+        <a href="{{ route('users.create') }}" class="btn btn-success">Add User</a>
+    </div>
     <table class="table">
         <thead class="thead-light">
             <tr>

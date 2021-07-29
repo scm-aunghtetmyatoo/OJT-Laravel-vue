@@ -19,6 +19,21 @@ class PostController extends Controller
         return view('posts.index',compact('posts'));
     }
 
+    public function search(Request $request){
+        // Get the search value from the request
+        $search = $request->search;
+    
+        // Search in the title and descroption columns from the posts table
+        $posts = Post::query()
+            ->where('title', 'like', "%{$search}%")
+            ->orWhere('description', 'like', "%{$search}%")
+            ->paginate(2);
+    
+        // Return the search view with the resluts compacted
+        return view('posts.index', compact('posts'));
+        
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -35,6 +50,13 @@ class PostController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+    public function confirm(Request $request)
+    {
+        $title = $request->title;
+        $description = $request->description;
+
+        return view('posts.confirm',compact('title','description'));
+    }
     public function store(Request $request)
     {
         $request->validate([
@@ -104,4 +126,5 @@ class PostController extends Controller
 
          return redirect()->route('posts.index')->with('success','post deleted successfully');
     }
+
 }

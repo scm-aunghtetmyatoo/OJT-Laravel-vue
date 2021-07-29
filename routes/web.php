@@ -22,11 +22,16 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::resource('posts', 'PostController');
+Route::post('posts/confirm', 'PostController@confirm')->name('posts.confirm');
+Route::post('posts/search', 'PostController@search')->name('posts.search');
 
 Route::get('users', 'UserController@index')->name('users.index');
 Route::get('users/create', 'UserController@create')->name('users.create');
 Route::post('users/create', 'UserController@store')->name('users.store');
+Route::post('users/confirm', 'UserController@confirm')->name('users.confirm');
 Route::get('users/edit/{id}', 'UserController@edit')->name('users.edit');
 Route::post('users/edit/{id}', 'UserController@update')->name('users.update');
 Route::post('users/destroy/{id}', 'UserController@destroy')->name('users.destroy');
+Route::post('users/search', 'UserController@search')->name('users.search');
+
 

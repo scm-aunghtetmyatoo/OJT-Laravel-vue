@@ -7,10 +7,7 @@
         <div class="row">
     <div class="col-lg-12 margin-tb">
         <div class="pull-left">
-            <h2>Add New Post</h2>
-        </div>
-        <div class="pull-right">
-            <a class="btn btn-primary" href="{{ route('posts.index') }}"> Back</a>
+            <h2>Post Confirm</h2>
         </div>
     </div>
 </div>
@@ -25,32 +22,37 @@
     </div>
 @endif
 
-<form action="{{ route('posts.confirm') }}" method="POST">
+<div class="panel panel-default">
+  <div class="panel-heading">Post Title : {{ $title }}</div>
+  <div class="panel-body">
+    Post Description : {{ $description }}
+  </div>
+</div>
+
+
+<form action="{{ route('posts.store') }}" method="POST">
     @csrf
 
      <div class="row">
         <div class="col-xs-12 col-sm-12 col-md-12">
             <div class="form-group">
-                <strong>Post Title:</strong>
-                <input type="text" name="title" class="form-control" placeholder="Title" value="{{ old('title') }}">
+                <input type="hidden" name="title" class="form-control" placeholder="Title" value="{{ $title }}">
             </div>
         </div>
 
         <div class="col-xs-12 col-sm-12 col-md-12">
             <div class="form-group">
-              <strong>Post Description:</strong>
-                <textarea class="form-control" style="height:150px" name="description" placeholder="Description">{{ old('description') }}</textarea>
+              <input type="hidden" name="description" class="form-control" placeholder="Title" value="{{ $description }}">
             </div>
         </div>
 
         <div class="mr-5">
-            <button type="submit" class="btn btn-primary">Confirm</button>
+            <button type="submit" class="btn btn-primary">Create</button>
         </div>
 
         <div class="mr-5">
-            <button type="reset" class="btn btn-primary">Clear</button>
+            <a href="{{ URL::previous() }}" class="btn btn-primary"> Cancel </a>
         </div>
-
     </div>
 </form>
         </div>
