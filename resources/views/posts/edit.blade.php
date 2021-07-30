@@ -25,11 +25,10 @@
         </div>
     @endif
 
-    <form action="{{ route('posts.update',$post->id) }}" method="POST">
+    <form action="{{ route('posts.editconfirm',$post->id) }}" method="POST">
         @csrf
 
-        @method('PUT')
-         <div class="row">
+         <div class="row">  
             <div class="col-xs-12 col-sm-12 col-md-12">
                 <div class="form-group">
                     <strong>Title:</strong>
@@ -53,7 +52,7 @@
 
 
             <div class="col-xs-12 col-sm-12 col-md-12 text-center">
-              <button type="submit" class="btn btn-primary">Update</button>
+              <button type="submit" class="btn btn-primary">Confirm</button>
             </div>
         </div>
     </form>

@@ -23,7 +23,11 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::resource('posts', 'PostController');
 Route::post('posts/confirm', 'PostController@confirm')->name('posts.confirm');
+Route::post('posts/{id}/editconfirm', 'PostController@editconfirm')->name('posts.editconfirm');
 Route::post('posts/search', 'PostController@search')->name('posts.search');
+Route::get('export', 'PostController@export')->name('export');
+Route::post('import', 'PostController@import')->name('import');
+Route::get('posts-upload', 'PostController@upload')->name('posts.upload');
 
 Route::get('users', 'UserController@index')->name('users.index');
 Route::get('users/create', 'UserController@create')->name('users.create');

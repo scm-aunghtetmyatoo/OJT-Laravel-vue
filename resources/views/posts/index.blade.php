@@ -9,12 +9,16 @@
             <button class="btn btn-success" type="submit">Search</button>
         </form>
         <a href="{{ route('posts.create') }}" class="btn btn-success">Add</a>
+        
+        <a class="btn btn-warning" href="{{ route('posts.upload') }}">Upload</a>
+        <a class="btn btn-warning" href="{{ route('export') }}">Export User Data</a>
     </div>
     <table class="table">
         <thead class="thead-light">
             <tr>
             <th scope="col">Post Title</th>
             <th scope="col">Post Description</th>
+            <th scope="col">Posted User</th>
             <th scope="col">Post Date</th>
             <th scope="col"></th>
             <th scope="col"></th>
@@ -25,6 +29,7 @@
             <tr>
             <th>{{ $post->title }}</th>
             <td>{{ $post->description }}</td>
+            <td>{{ $post->user->name }}</td>
             <td>{{ $post->created_at->format('d/m/Y') }}</td>
             <td><a href="{{ route('posts.edit',$post->id) }}" class="btn btn-warning">Edit</a></td>
             <td>

@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Post;
+use App\Exports\PostsExport;
+use App\Imports\PostsImport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class PostController extends Controller
 {
@@ -68,6 +71,7 @@ class PostController extends Controller
         $post->title = $request->title;
         $post->description = $request->description;
         $post->status = 1;
+        $post->user_id = auth()->user()->id;
         $post->save();
 
         return redirect()->route('posts.index')->with('success','Post created successfully.');
@@ -93,6 +97,14 @@ class PostController extends Controller
     public function edit(Post $post)
     {
         return view('posts.edit',compact('post'));
+    }
+    public function editconfirm(Request $request, $id)
+    {
+        $post = Post::find($id);
+        $title = $request->title;
+        $description = $request->description;
+        $status = $request->status;
+        return view('posts.editconfirm',compact('post','title','description','status'));
     }
 
     /**
@@ -125,6 +137,25 @@ class PostController extends Controller
         $post->delete();
 
          return redirect()->route('posts.index')->with('success','post deleted successfully');
+    }
+
+    public function export() 
+    {
+        return Excel::download(new PostsExport, 'posts.xlsx');
+    }
+   
+    /**
+    * @return \Illuminate\Support\Collection
+    */
+    public function import(Post $post) 
+    {
+        Excel::import(new PostsImport,request()->file('file'));
+           
+        return redirect()->route('posts.index')->with('success','Import Process successfully');
+    }
+    public function upload()
+    {
+        return view('posts.upload');
     }
 
 }
