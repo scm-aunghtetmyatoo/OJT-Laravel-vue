@@ -10,6 +10,9 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class PostController extends Controller
 {
+    public function __construct(){
+        $this->middleware('auth')->except(['index']);
+    }
     /**
      * Display a listing of the resource.
      *
@@ -17,7 +20,7 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::orderBy('id', 'desc')->paginate(4);
+        $posts = Post::orderBy('id', 'desc')->paginate(config('constants.paginate.post'));
 
         return view('posts.index',compact('posts'));
     }
@@ -42,9 +45,11 @@ class PostController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        return view('posts.create');
+        $title = $request->title;
+        $description = $request->description;
+        return view('posts.create', compact('title', 'description'));
     }
 
     /**

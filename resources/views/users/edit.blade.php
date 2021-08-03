@@ -133,6 +133,13 @@
                             </div>
                         </div>
 
+                        <div class="form-group row">
+                            <div class="col-md-4 col-form-label text-md-right">
+                                <a href="{{ url('change-password',$user->id) }}">Change Password</a>
+                            </div>
+                        </div>
+
+
                         
 
                         <div class="form-group row mb-0">

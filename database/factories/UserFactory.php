@@ -28,6 +28,7 @@ $factory->define(User::class, function (Faker $faker) {
         'dob' => $faker->dateTimeThisCentury->format('Y-m-d'),
         'address' => $faker->address,
         'profile' => 'Sunflower_from_Silesia2.jpg',
+        'created_user_id' => rand(1,5),
         'remember_token' => Str::random(10),
     ];
 });

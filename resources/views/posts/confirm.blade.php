@@ -50,8 +50,27 @@
             <button type="submit" class="btn btn-primary">Create</button>
         </div>
 
-        <div class="mr-5">
-            <a href="{{ URL::previous() }}" class="btn btn-primary"> Cancel </a>
+       
+    </div>
+</form>
+
+<form action="{{ route('posts.create') }}" method="POST">
+    @csrf
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12">
+            <div class="form-group">
+                <input type="hidden" name="title" class="form-control" placeholder="Title" value="{{ $title }}">
+            </div>
+        </div>
+
+        <div class="col-xs-12 col-sm-12 col-md-12">
+            <div class="form-group">
+              <input type="hidden" name="description" class="form-control" placeholder="Title" value="{{ $description }}">
+            </div>
+        </div>
+
+    <div class="mr-5">
+            <button type="submit" class="btn btn-primary">Cancel</button>
         </div>
     </div>
 </form>

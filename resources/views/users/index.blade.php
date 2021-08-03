@@ -16,6 +16,7 @@
             <tr>
             <th scope="col">Name</th>
             <th scope="col">Email</th>
+            <th scope="col">Created User</th>
             <th scope="col">Type</th>
             <th scope="col">Phone</th>
             <th scope="col">Birth Date</th>
@@ -30,6 +31,7 @@
             <tr>
             <th>{{ $user->name }}</th>
             <td>{{ $user->email }}</td>
+            <td>{{ $user->created_user->name }}</td>
             <td>{{ $user->type }}</td>
             <td>{{ $user->phone }}</td>
             <td>{{ $user->dob }}</td>

@@ -8,9 +8,9 @@
             <input type="text" name="search" class="form-control mr-3" required />
             <button class="btn btn-success" type="submit">Search</button>
         </form>
-        <a href="{{ route('posts.create') }}" class="btn btn-success">Add</a>
+        <a href="{{ route('posts.create') }}" class="btn btn-success mr-3">Add</a>
         
-        <a class="btn btn-warning" href="{{ route('posts.upload') }}">Upload</a>
+        <a class="btn btn-warning mr-3" href="{{ route('posts.upload') }}">Upload</a>
         <a class="btn btn-warning" href="{{ route('export') }}">Export User Data</a>
     </div>
     <table class="table">

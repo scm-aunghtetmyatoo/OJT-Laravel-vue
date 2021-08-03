@@ -11,7 +11,7 @@ class UserController extends Controller
 {
     public function index()
     {
-        $users = User::orderBy('id', 'desc')->paginate(4);
+        $users = User::orderBy('id', 'desc')->paginate(config('constants.paginate.user'));
 
         return view('users.index',compact('users'));
     }
@@ -30,6 +30,12 @@ class UserController extends Controller
         
     }
 
+    public function show($id)
+    {
+        $user = User::find($id);
+        return view('users.show', compact('user'));
+    }
+
     public function create()
     {
         return view('users.create');
@@ -37,6 +43,13 @@ class UserController extends Controller
 
     public function confirm(Request $request)
     {
+        $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
+            // 'profile' => 'required|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
+        
         $imagePath = $request->file('profile');
         $imageName = $imagePath->getClientOriginalName();
 
@@ -75,6 +88,8 @@ class UserController extends Controller
         $user->dob = $request->dob;
         $user->address = $request->address;
         $user->profile = $request->profile;
+        $user->created_user_id = auth()->user()->id;
+
         $user->save();
 
         return redirect()->route('users.index')->with('success','User created successfully.');

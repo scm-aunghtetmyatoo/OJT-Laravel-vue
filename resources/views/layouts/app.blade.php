@@ -9,6 +9,10 @@
 
     <title>SCM Bulletin Board</title>
 
+    <!-- dropbox CDN -->
+    <link href="{{ asset('css/dropzone.min.css') }}" rel="stylesheet">
+    <script src="{{ asset('js/dropzone.min.js') }}"></script>
+
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
@@ -34,17 +38,23 @@
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
-                    <ul class="navbar-nav mr-auto">
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ url('users') }}">Users</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="">User</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ url('posts') }}">Posts</a>
-                        </li>
-                    </ul>
+                    @guest
+
+                    @else
+                        <ul class="navbar-nav mr-auto">
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ url('users') }}">Users</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('users.show',auth()->user()->id) }}">User</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ url('posts') }}">Posts</a>
+                            </li>
+                        </ul>
+                    @endguest
+                        
+                    
 
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">
