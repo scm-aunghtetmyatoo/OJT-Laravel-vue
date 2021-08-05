@@ -11,7 +11,7 @@ use Maatwebsite\Excel\Facades\Excel;
 class PostController extends Controller
 {
     public function __construct(){
-        $this->middleware('auth')->except(['index']);
+        $this->middleware('auth');
     }
     /**
      * Display a listing of the resource.
@@ -60,6 +60,11 @@ class PostController extends Controller
      */
     public function confirm(Request $request)
     {
+        $request->validate([
+            'title' => ['required','unique:posts'],
+            'description' => 'required',
+        ]);
+
         $title = $request->title;
         $description = $request->description;
 
@@ -67,11 +72,6 @@ class PostController extends Controller
     }
     public function store(Request $request)
     {
-        $request->validate([
-            'title' => 'required',
-            'description' => 'required',
-        ]);
-
         $post = new Post;
         $post->title = $request->title;
         $post->description = $request->description;
@@ -99,16 +99,43 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Post $post)
+    public function edit(Request $request, $id)
     {
-        return view('posts.edit',compact('post'));
+        $post = Post::find($id);
+        if(count($request->all()) > 0) {
+            $title = $request->title;
+            $description = $request->description;
+            if($request->get('status') == null){
+                $status = 0;
+            }
+            else{
+                $status = $request->status;
+            }
+            return view('posts.edit', compact('post','title', 'description', 'status'));
+        } else {
+            $title = $post->title;
+            $description = $post->description;
+            $status = $post->status;
+            return view('posts.edit',compact('post','title', 'description', 'status'));
+        }
     }
     public function editconfirm(Request $request, $id)
     {
+        $request->validate([
+            'title' => 'required|unique:posts,email,'.$id,
+            'description' => 'required',
+            'status' => 'boolean|nullable',
+        ]);
+
         $post = Post::find($id);
         $title = $request->title;
         $description = $request->description;
-        $status = $request->status;
+        if($request->get('status') == null){
+            $status = 0;
+        }
+        else{
+            $status = $request->status;
+        }
         return view('posts.editconfirm',compact('post','title','description','status'));
     }
 
@@ -121,11 +148,6 @@ class PostController extends Controller
      */
     public function update(Request $request, Post $post)
     {
-        $request->validate([
-            'title' => 'required',
-            'description' => 'required',
-        ]);
-
         $post->update($request->all());
 
         return redirect()->route('posts.index')->with('success','Post updated successfully');

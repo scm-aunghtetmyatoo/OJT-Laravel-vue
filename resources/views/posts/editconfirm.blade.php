@@ -3,68 +3,65 @@
 
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-8">
-        <div class="row">
-    <div class="col-lg-12 margin-tb">
-        <div class="pull-left">
-            <h2>Post Confirm</h2>
-        </div>
-    </div>
-</div>
-
-@if ($errors->any())
-    <div class="alert alert-danger">
-        <ul>
-            @foreach ($errors->all() as $error)
+        <div class="col-md-5">
+            @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul></ul>
+                @foreach ($errors->all() as $error)
                 <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-@endif
+                @endforeach
+                </ul>
+            </div>
+            @endif
 
-<div class="panel panel-default">
-  <div class="panel-heading">Post Title : {{ $title }}</div>
-  <div class="panel-body">
-    Post Description : {{ $description }}
-  </div>
-</div>
+            <div class="card">
+                <div class="card-header">
+                    <div class="row justify-content-start">
+                        <div class="col-12">
+                            <p class="h4">Create Post Confirmation</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row justify-content-start mb-4">
+                        <div class="col-6">Title</div>
+                        <div class="col-6">{{ $title }}</div>
+                    </div>
+                    <div class="row justify-content-start mb-4">
+                        <div class="col-6">Description</div>
+                        <div class="col-6">{{ $description }}</div>
+                    </div>
+                    <div class="row justify-content-start mb-4">
+                        <div class="col-6">Status</div>
+                        <div class="col-6">{{ $status }}</div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="form-inline">
+                        <form action="{{ route('posts.update', $post->id) }}" method="POST"
+                            enctype="multipart/form-data">
+                            @csrf
 
-<form action="{{ route('posts.update',$post->id) }}" method="POST">
-    @csrf
+                            @method('PUT')
 
-    @method('PUT')
-     <div class="row">
-        <div class="col-xs-12 col-sm-12 col-md-12">
-            <div class="form-group">
-                <input type="hidden" name="title" class="form-control" placeholder="Title" value="{{ $title }}">
+                            <input type="hidden" name="title" class="form-control" value="{{ $title }}">
+                            <input type="hidden" name="description" class="form-control" value="{{ $description }}">
+                            <input type="hidden" name="status" class="form-control" value="{{ $status }}">
+                            <button type="submit" class="btn btn-primary mr-3">Update</button>
+
+                        </form>
+                        <form action="{{ route('posts.edit', $post->id) }}" method="POST" enctype="multipart/form-data">
+                            @csrf
+
+                            <input type="hidden" name="title" class="form-control" value="{{ $title }}">
+                            <input type="hidden" name="description" class="form-control" value="{{ $description }}">
+                            <input type="hidden" name="status" class="form-control" value="{{ $status }}">
+                            <button type="submit" class="btn btn-primary mr-3">Cancel</button>
+
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
-
-        <div class="col-xs-12 col-sm-12 col-md-12">
-            <div class="form-group">
-              <input type="hidden" name="description" class="form-control" placeholder="Title" value="{{ $description }}">
-            </div>
-        </div>
-
-        <div class="col-xs-12 col-sm-12 col-md-12">
-            <div class="form-group">
-              <input type="hidden" name="status" class="form-control" placeholder="Title" value="{{ $status }}">
-            </div>
-        </div>
-
-        <div class="mr-5">
-            <button type="submit" class="btn btn-primary">Update</button>
-        </div>
-
-        <div class="mr-5">
-            <a href="{{ URL::previous() }}" class="btn btn-primary"> Cancel </a>
-        </div>
     </div>
-</form>
-
-
-
-        </div>
-    </div>
-</div>
-@endsection
+    @endsection

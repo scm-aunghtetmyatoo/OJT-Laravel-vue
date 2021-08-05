@@ -1,38 +1,54 @@
 @extends('layouts.app')
+
 @section('content')
 
 <div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-        <div class="row">
-    <div class="col-lg-12 margin-tb">
-        <div class="pull-left">
-            <h2>User Confirm</h2>
+    <div class="row justify-content-left">
+        <div class="col-md-5">
+            <div class="card">
+                <div class="card-header">
+                    <div class="row justify-content-start">
+                        <div class="col-6">
+                            <p class="h4">User Profile</p>
+                        </div>
+                        <div class="col-6">
+                            <a href="{{ route('users.edit', $user->id) }}" class="btn btn-primary float-right">Edit</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row justify-content-start mb-4">
+                        <div class="col-6">Name</div>
+                        <div class="col-6">{{ $user->name }}</div>
+                    </div>
+                    <div class="row justify-content-start mb-4">
+                        <div class="col-6"></div>
+                        <div class="col-6"><img src="{{ asset('storage/uploads/'.$user->profile) }}" height="200px"
+                                width="180px"></div>
+                    </div>
+                    <div class="row justify-content-start mb-4">
+                        <div class="col-6">Email Address</div>
+                        <div class="col-6">{{ $user->email }}</div>
+                    </div>
+                    <div class="row justify-content-start mb-4">
+                        <div class="col-6">Type</div>
+                        <div class="col-6">{{ $user->type }}</div>
+                    </div>
+                    <div class="row justify-content-start mb-4">
+                        <div class="col-6">Phone</div>
+                        <div class="col-6">{{ $user->phone }}</div>
+                    </div>
+                    <div class="row justify-content-start mb-4">
+                        <div class="col-6">Date Of Birth</div>
+                        <div class="col-6">{{ $user->dob }}</div>
+                    </div>
+                    <div class="row justify-content-start mb-4">
+                        <div class="col-6">Address</div>
+                        <div class="col-6">{{ $user->address }}</div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
-
-@if ($errors->any())
-    <div class="alert alert-danger">
-        <ul></ul>
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-@endif
-
-<div class="panel panel-default">
-  <div class="panel-heading">Name : {{ $user->name }}</div>
-  <div class="panel-body">
-    Email : {{ $user->email }}<br>
-  
-  </div>
-</div>
-
-
-        </div>
-    </div>
-</div>
-
 @endsection

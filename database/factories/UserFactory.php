@@ -23,12 +23,12 @@ $factory->define(User::class, function (Faker $faker) {
         'email' => $faker->unique()->safeEmail,
         'email_verified_at' => now(),
         'password' => Hash::make('12345678'), // password
-        'type' => 'user',
+        'type' => 'admin',
         'phone' => $faker->phoneNumber,
         'dob' => $faker->dateTimeThisCentury->format('Y-m-d'),
         'address' => $faker->address,
         'profile' => 'Sunflower_from_Silesia2.jpg',
-        'created_user_id' => rand(1,5),
+        'created_user_id' => rand(1,3),
         'remember_token' => Str::random(10),
     ];
 });

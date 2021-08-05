@@ -24,6 +24,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::resource('posts', 'PostController');
 Route::post('posts/create', 'PostController@create')->name('posts.create');
 Route::post('posts/confirm', 'PostController@confirm')->name('posts.confirm');
+Route::post('posts/{id}/edit', 'PostController@edit')->name('posts.edit');
 Route::post('posts/{id}/editconfirm', 'PostController@editconfirm')->name('posts.editconfirm');
 Route::post('posts/search', 'PostController@search')->name('posts.search');
 Route::get('export', 'PostController@export')->name('export');
@@ -32,11 +33,14 @@ Route::get('posts-upload', 'PostController@upload')->name('posts.upload');
 
 Route::get('users', 'UserController@index')->name('users.index');
 Route::get('users/create', 'UserController@create')->name('users.create');
+Route::post('users/create', 'UserController@create')->name('users.create');
+Route::post('users/store', 'UserController@store')->name('users.store');
 Route::get('users/{id}/show', 'UserController@show')->name('users.show');
-Route::post('users/create', 'UserController@store')->name('users.store');
 Route::post('users/confirm', 'UserController@confirm')->name('users.confirm');
 Route::get('users/{id}/edit', 'UserController@edit')->name('users.edit');
-Route::post('users/{id}/edit', 'UserController@update')->name('users.update');
+Route::post('users/{id}/edit', 'UserController@edit')->name('users.edit');
+Route::post('users/{id}/editconfirm', 'UserController@editconfirm')->name('users.editconfirm');
+Route::post('users/{id}/update', 'UserController@update')->name('users.update');
 Route::post('users/{id}/destroy', 'UserController@destroy')->name('users.destroy');
 Route::post('users/search', 'UserController@search')->name('users.search');
 

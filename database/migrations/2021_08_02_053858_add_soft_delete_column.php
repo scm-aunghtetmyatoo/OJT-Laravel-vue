@@ -16,6 +16,10 @@ class AddSoftDeleteColumn extends Migration
         Schema::table('posts', function(Blueprint $table) {
             $table->softDeletes();
         });
+
+        Schema::table('users', function(Blueprint $table) {
+            $table->softDeletes();
+        });
     }
 
     /**
@@ -25,8 +29,6 @@ class AddSoftDeleteColumn extends Migration
      */
     public function down()
     {
-        Schema::table('posts', function(Blueprint $table) {
-            $table->dropSoftDeletes();
-        });
+       
     }
 }
