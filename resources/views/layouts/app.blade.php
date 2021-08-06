@@ -53,6 +53,9 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ url('posts') }}">Posts</a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ url('email') }}">Contact Us</a>
+                            </li>
                         </ul>
                     @endguest
                         

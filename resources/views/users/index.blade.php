@@ -3,6 +3,11 @@
 @section('content')
 
 <div class="container">
+    @if (session('success'))
+        <div class="alert alert-success" role="alert">
+            {{ session('status') }}
+        </div>
+    @endif
     <div class="mb-4 form-inline">
         <form action="{{ route('users.search') }}" method="POST" class="form-inline mr-3">
             @csrf

@@ -50,7 +50,11 @@ Start the local development server
 
     php artisan serve
 
-You can now access the server at http://localhost:8000   
+You can now access the server at http://localhost:8000 
+
+## Usage
+
+Login with email admin@gmail.com, password '12345678'
 
 ## License
 

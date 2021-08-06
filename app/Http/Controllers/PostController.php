@@ -122,7 +122,7 @@ class PostController extends Controller
     public function editconfirm(Request $request, $id)
     {
         $request->validate([
-            'title' => 'required|unique:posts,email,'.$id,
+            'title' => 'required|unique:posts,title,'.$id,
             'description' => 'required',
             'status' => 'boolean|nullable',
         ]);
