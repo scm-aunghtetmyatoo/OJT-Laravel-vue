@@ -50,4 +50,5 @@ Route::post('change-password/{id}', 'ChangePasswordController@store')->name('cha
 Route::get('/email', 'EmailController@create');
 Route::post('/email', 'EmailController@sendEmail')->name('send.email');
 
-
+// test route for service_dao_structure
+Route::get('/test', TestController::class . '@getList');
