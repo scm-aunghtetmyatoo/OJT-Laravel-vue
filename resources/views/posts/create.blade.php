@@ -1,59 +1,92 @@
-@extends('layouts.app')
-@section('content')
 
+@extends('layouts.app')
+
+@section('content')
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
-        <div class="row">
-    <div class="col-lg-12 margin-tb">
-        <div class="pull-left">
-            <h2>Add New Post</h2>
-        </div>
-        <div class="pull-right">
-            <a class="btn btn-primary" href="{{ route('posts.index') }}"> Back</a>
+            <div class="card">
+                <div class="card-header">{{ __('Create Post') }}</div>
+
+                <div class="card-body">
+                    <form method="POST" action="{{ route('posts.confirm') }}" enctype="multipart/form-data">
+                        @csrf
+
+                        <div class="form-group row">
+                            <label for="title" class="col-md-4 col-form-label text-md-right">{{ __('Title') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="title" type="text" class="form-control @error('title') is-invalid @enderror" name="title" value="{{ $title }}" required autocomplete="title" autofocus>
+
+                                @error('title')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="description" class="col-md-4 col-form-label text-md-right">{{ __('Description') }}</label>
+
+                            <div class="col-md-6">
+                            <textarea name="description" id="description" cols="30" rows="5" class="form-control @error('description') is-invalid @enderror">{{ $description }}</textarea>
+
+                                @error('description')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="form-group row mb-0">
+                            <div class="col-md-6 offset-md-4">
+                                <button type="submit" class="btn btn-primary mr-3">
+                                    {{ __('Confirm') }}
+                                </button>
+                                <button class="reset btn btn-primary">
+                                    {{ __('Clear') }}
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
 </div>
+<script>
+    var resetButtons = document.getElementsByClassName('reset');
 
-@if ($errors->any())
-    <div class="alert alert-danger">
-        <ul>
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-@endif
+    // Loop through each reset buttons to bind the click event
+    for (var i = 0; i < resetButtons.length; i++) {
+        resetButtons[i].addEventListener('click', resetForm);
+    }
 
-<form action="{{ route('posts.confirm') }}" method="POST">
-    @csrf
+    /**
+     * Function to hard reset the inputs of a form.
+     *
+     * @param object event The event object.
+     * @return void
+     */
+    function resetForm(event) {
 
-     <div class="row">
-        <div class="col-xs-12 col-sm-12 col-md-12">
-            <div class="form-group">
-                <strong>Post Title:</strong>
-                <input type="text" name="title" class="form-control" placeholder="Title" value="{{ old('title') }}">
-            </div>
-        </div>
+        event.preventDefault();
 
-        <div class="col-xs-12 col-sm-12 col-md-12">
-            <div class="form-group">
-              <strong>Post Description:</strong>
-                <textarea class="form-control" style="height:150px" name="description" placeholder="Description">{{ old('description') }}</textarea>
-            </div>
-        </div>
+        var form = event.currentTarget.form;
+        var inputs = form.querySelectorAll('input');
+        var textareas = form.querySelectorAll('textarea');
 
-        <div class="mr-5">
-            <button type="submit" class="btn btn-primary">Confirm</button>
-        </div>
+        inputs.forEach(function (input, index) {
+            input.value = null;
+        });
 
-        <div class="mr-5">
-            <button type="reset" class="btn btn-primary">Clear</button>
-        </div>
+        textareas.forEach(function (textarea, index) {
+            textarea.value = null;
+        });
 
-    </div>
-</form>
-        </div>
-    </div>
-</div>
+    }
+
+</script>
 @endsection

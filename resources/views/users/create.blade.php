@@ -5,7 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">{{ __('Add') }}</div>
+                <div class="card-header">{{ __('Create User') }}</div>
 
                 <div class="card-body">
                     <form method="POST" action="{{ route('users.confirm') }}" enctype="multipart/form-data">
@@ -15,7 +15,7 @@
                             <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Name') }}</label>
 
                             <div class="col-md-6">
-                                <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
+                                <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ $name }}" required autocomplete="name" autofocus>
 
                                 @error('name')
                                     <span class="invalid-feedback" role="alert">
@@ -29,7 +29,7 @@
                             <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
 
                             <div class="col-md-6">
-                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email">
+                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ $email }}" required autocomplete="email">
 
                                 @error('email')
                                     <span class="invalid-feedback" role="alert">
@@ -43,7 +43,7 @@
                             <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
 
                             <div class="col-md-6 input-group">
-                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
+                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" value="{{ $password }}" required autocomplete="new-password">
 
                                 <div class="input-group-append">
                                     <div class="input-group-text">
@@ -63,7 +63,7 @@
                             <label for="password-confirm" class="col-md-4 col-form-label text-md-right">{{ __('Confirm Password') }}</label>
 
                             <div class="col-md-6 input-group">
-                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
+                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" value="{{ $password }}" required autocomplete="new-password">
 
                                 <div class="input-group-append">
                                     <div class="input-group-text">
@@ -77,8 +77,10 @@
                             <label for="type" class="col-md-4 col-form-label text-md-right">{{ __('Type') }}</label>
 
                             <div class="col-md-6">
-                                <input id="type" type="text" class="form-control @error('type') is-invalid @enderror" name="type" value="{{ old('type') }}" required autocomplete="type" autofocus>
-
+                                <select name="type" class="form-select form-control @error('type') is-invalid @enderror">
+                                    <option value="admin">Admin</option>
+                                    <option value="user">User</option>
+                                </select>
                                 @error('type')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -86,12 +88,13 @@
                                 @enderror
                             </div>
                         </div>
+                        
 
                         <div class="form-group row">
                             <label for="phone" class="col-md-4 col-form-label text-md-right">{{ __('Phone') }}</label>
 
                             <div class="col-md-6">
-                                <input id="phone" type="text" class="form-control @error('phone') is-invalid @enderror" name="phone" value="{{ old('phone') }}" required autocomplete="phone" autofocus>
+                                <input id="phone" type="text" class="form-control @error('phone') is-invalid @enderror" name="phone" value="{{ $phone }}" required autocomplete="phone" autofocus>
 
                                 @error('phone')
                                     <span class="invalid-feedback" role="alert">
@@ -105,7 +108,7 @@
                             <label for="dob" class="col-md-4 col-form-label text-md-right">{{ __('Date of Birth') }}</label>
 
                             <div class="col-md-6">
-                                <input id="dob" type="date" class="form-control @error('dob') is-invalid @enderror" name="dob" value="{{ old('dob') }}" required autocomplete="dob" autofocus>
+                                <input id="dob" type="date" class="form-control @error('dob') is-invalid @enderror" name="dob" value="{{ $dob }}" required autocomplete="dob" autofocus>
 
                                 @error('dob')
                                     <span class="invalid-feedback" role="alert">
@@ -119,7 +122,7 @@
                             <label for="address" class="col-md-4 col-form-label text-md-right">{{ __('Address') }}</label>
 
                             <div class="col-md-6">
-                                <textarea name="address" id="address" cols="30" rows="5" class="form-control @error('address') is-invalid @enderror"></textarea>
+                                <textarea name="address" id="address" cols="30" rows="5" class="form-control @error('address') is-invalid @enderror">{{ $address }}</textarea>
 
                                 @error('address')
                                     <span class="invalid-feedback" role="alert">
@@ -133,7 +136,7 @@
                             <label for="profile" class="col-md-4 col-form-label text-md-right">{{ __('Profile') }}</label>
 
                             <div class="col-md-6">
-                                <input id="profile" type="file" class="form-control @error('profile') is-invalid @enderror" name="profile" value="{{ old('profile') }}" required autocomplete="profile" autofocus>
+                                <input id="profile" type="file" class="form-control @error('profile') is-invalid @enderror" name="profile" value="{{ $profile }}" required autocomplete="profile" autofocus>
 
                                 @error('profile')
                                     <span class="invalid-feedback" role="alert">
@@ -145,14 +148,10 @@
 
                         <div class="form-group row mb-0">
                             <div class="col-md-6 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
+                                <button type="submit" class="btn btn-primary mr-3">
                                     {{ __('Confirm') }}
                                 </button>
-                            </div>
-                        </div>
-                        <div class="form-group row mb-0">
-                            <div class="col-md-6 offset-md-4">
-                                <button type="reset" class="btn btn-primary">
+                                <button class="reset btn btn-primary">
                                     {{ __('Clear') }}
                                 </button>
                             </div>
@@ -174,5 +173,36 @@
     input.attr("type", "password");
     }
     });
+
+    var resetButtons = document.getElementsByClassName('reset');
+
+    // Loop through each reset buttons to bind the click event
+    for (var i = 0; i < resetButtons.length; i++) {
+        resetButtons[i].addEventListener('click', resetForm);
+    }
+
+    /**
+     * Function to hard reset the inputs of a form.
+     *
+     * @param object event The event object.
+     * @return void
+     */
+    function resetForm(event) {
+
+        event.preventDefault();
+
+        var form = event.currentTarget.form;
+        var inputs = form.querySelectorAll('input');
+        var textareas = form.querySelectorAll('textarea');
+
+        inputs.forEach(function (input, index) {
+            input.value = null;
+        });
+
+        textareas.forEach(function (textarea, index) {
+            textarea.value = null;
+        });
+
+    }
 </script>
 @endsection

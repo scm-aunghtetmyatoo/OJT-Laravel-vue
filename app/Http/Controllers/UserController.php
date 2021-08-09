@@ -5,15 +5,23 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Gate;
+
 
 
 class UserController extends Controller
 {
+    public function __construct(){
+        $this->middleware('auth');
+    }
+    
     public function index()
     {
-        $users = User::orderBy('id', 'desc')->paginate(4);
+        if(Gate::allows('admin')) {
+            $users = User::orderBy('id', 'desc')->paginate(config('constants.paginate.user'));
 
-        return view('users.index',compact('users'));
+            return view('users.index',compact('users'));
+        }
     }
 
     public function search(Request $request){
@@ -30,17 +38,23 @@ class UserController extends Controller
         
     }
 
-    public function create()
+    public function show($id)
     {
-        return view('users.create');
+        $user = User::find($id);
+        return view('users.show', compact('user'));
     }
 
-    public function confirm(Request $request)
+    public function create(Request $request)
     {
-        $imagePath = $request->file('profile');
-        $imageName = $imagePath->getClientOriginalName();
+        if($request->hasFile('profile')) {
+            $imagePath = $request->file('profile');
+            $imageName = $imagePath->getClientOriginalName();
 
-        $request->file('profile')->storeAs('uploads', $imageName, 'public');
+            $request->file('profile')->storeAs('uploads', $imageName, 'public');
+            $profile = $imageName;
+        } else {
+            $profile = $request->profile;
+        }
 
         $name = $request->name;
         $email = $request->email;
@@ -50,22 +64,48 @@ class UserController extends Controller
         $phone = $request->phone;
         $dob = $request->dob;
         $address = $request->address;
-        $profile = $imageName;
+
+        return view('users.create', compact('name','email','password','password_confirmation','type','phone','dob','address','profile'));
+    }
+
+    public function confirm(Request $request)
+    {
+        $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'type' => ['required'],
+            'phone' => ['required'],
+            'dob' => ['required'],
+            'address' => ['required'],
+            'profile' => ['required','mimes:jpeg,png,jpg,gif,svg'],
+        ]);
+
+        if($request->hasFile('profile')) {
+            $imagePath = $request->file('profile');
+            $imageName = $imagePath->getClientOriginalName();
+
+            $request->file('profile')->storeAs('uploads', $imageName, 'public');
+            $profile = $imageName;
+        } else {
+            $profile = $request->profile;
+        }
+        
+
+        $name = $request->name;
+        $email = $request->email;
+        $password = $request->password;
+        $password_confirmation = $request->password_confirmation;
+        $type = $request->type;
+        $phone = $request->phone;
+        $dob = $request->dob;
+        $address = $request->address;
 
         return view('users.confirm',compact('name','email','password','password_confirmation','type','phone','dob','address','profile'));
     }
     
     public function store(Request $request)
     {
-        $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
-            // 'profile' => 'required|mimes:jpeg,png,jpg,gif,svg|max:2048',
-        ]);
-
-
-
         $user = new User;
         $user->name = $request->name;
         $user->email = $request->email;
@@ -75,38 +115,97 @@ class UserController extends Controller
         $user->dob = $request->dob;
         $user->address = $request->address;
         $user->profile = $request->profile;
+        $user->created_user_id = auth()->user()->id;
+
         $user->save();
 
         return redirect()->route('users.index')->with('success','User created successfully.');
     }
 
-    public function edit($id)
+    public function edit(Request $request, $id)
     {
         $user = User::find($id);
-        return view('users.edit',compact('user'));
+
+        if(count($request->all()) > 0) {
+            if($request->hasFile('profile')) {
+                $imagePath = $request->file('profile');
+                $imageName = $imagePath->getClientOriginalName();
+    
+                $request->file('profile')->storeAs('uploads', $imageName, 'public');
+                $profile = $imageName;
+            } else {
+                $profile = $request->profile;
+            }
+
+            $name = $request->name;
+            $email = $request->email;
+            $password = $request->password;
+            $type = $request->type;
+            $phone = $request->phone;
+            $dob = $request->dob;
+            $address = $request->address;
+            return view('users.edit', compact('user','name','email','password','type','phone','dob','address','profile'));
+        } else {
+            $name = $user->name;
+            $email = $user->email;
+            $password = $user->password;
+            $type = $user->type;
+            $phone = $user->phone;
+            $dob = $user->dob;
+            $address = $user->address;
+            $profile = $user->profile;
+            return view('users.edit', compact('user','name','email','password','type','phone','dob','address','profile'));
+        }
+    }
+
+    public function editconfirm(Request $request, $id)
+    {
+        $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'email' => 'required|email|unique:users,email,'.$id,
+            'type' => ['required'],
+            'phone' => ['required'],
+            'dob' => ['required'],
+            'address' => ['required'],
+            'profile' => ['mimes:jpeg,png,jpg,gif,svg'],
+        ]);
+
+
+        $user = User::find($id);
+        
+        if($request->hasFile('profile')) {
+            $imagePath = $request->file('profile');
+            $imageName = $imagePath->getClientOriginalName();
+
+            $request->file('profile')->storeAs('uploads', $imageName, 'public');
+            $profile = $imageName;
+        } else {
+            $profile = $user->profile;
+        }
+ 
+        $name = $request->name;
+        $email = $request->email;
+        $password = $request->password;
+        $type = $request->type;
+        $phone = $request->phone;
+        $dob = $request->dob;
+        $address = $request->address;
+        
+        return view('users.editconfirm',compact('user','name','email','password','type','phone','dob','address','profile'));
     }
 
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-        ]);
-
-        $imagePath = $request->file('profile');
-        $imageName = $imagePath->getClientOriginalName();
-
-        $path = $request->file('profile')->storeAs('uploads', $imageName, 'public');
-
         $user = User::find($id);
 
         $user->name = $request->name;
         $user->email = $request->email;
-        $user->password = Hash::make($request->password);
+        $user->password = $request->password;
         $user->type = $request->type;
         $user->phone = $request->phone;
         $user->dob = $request->dob;
         $user->address = $request->address;
-        $user->profile = $imageName;
+        $user->profile = $request->profile;
         $user->save();
 
         return redirect()->route('users.index')->with('success','User updated successfully');

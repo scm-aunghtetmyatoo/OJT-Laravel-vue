@@ -9,9 +9,13 @@
 
     <title>SCM Bulletin Board</title>
 
+    <!-- dropbox CDN -->
+    <link href="{{ asset('css/dropzone.min.css') }}" rel="stylesheet">
+    <script src="{{ asset('js/dropzone.min.js') }}"></script>
+
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="{{ asset('js/jquery-3.6.0.min.js') }}"></script>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -34,30 +38,34 @@
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
-                    <ul class="navbar-nav mr-auto">
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ url('users') }}">Users</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="">User</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ url('posts') }}">Posts</a>
-                        </li>
-                    </ul>
+                    @guest
+
+                    @else
+                        <ul class="navbar-nav mr-auto">
+                            @if(auth()->user()->type === "admin")
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ url('users') }}">Users</a>
+                                </li>
+                            @endif
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('users.show',auth()->user()->id) }}">User</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ url('posts') }}">Posts</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ url('email') }}">Contact Us</a>
+                            </li>
+                        </ul>
+                    @endguest
+                        
+                    
 
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">
                         <!-- Authentication Links -->
                         @guest
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
-                            </li>
-                            @if (Route::has('register'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
-                                </li>
-                            @endif
+                            
                         @else
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
