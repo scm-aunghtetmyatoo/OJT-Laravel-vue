@@ -7,11 +7,16 @@ use App\Post;
 use App\Exports\PostsExport;
 use App\Imports\PostsImport;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Contracts\Services\Posts\PostServiceInterface;
 
 class PostController extends Controller
 {
-    public function __construct(){
-        $this->middleware('auth');
+    private $postService;
+
+    public function __construct(PostServiceInterface $postService)
+    {
+        $this->postService = $postService;
+        $this->middleware('auth');  
     }
     /**
      * Display a listing of the resource.
@@ -20,20 +25,15 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::orderBy('id', 'desc')->paginate(config('constants.paginate.post'));
+        $posts = $this->postService->getPostList();
 
         return view('posts.index',compact('posts'));
     }
 
     public function search(Request $request){
-        // Get the search value from the request
-        $search = $request->search;
-    
-        // Search in the title and descroption columns from the posts table
-        $posts = Post::query()
-            ->where('title', 'like', "%{$search}%")
-            ->orWhere('description', 'like', "%{$search}%")
-            ->paginate(2);
+
+        $posts=$this->postService->search($request);
+
     
         // Return the search view with the resluts compacted
         return view('posts.index', compact('posts'));
@@ -72,12 +72,7 @@ class PostController extends Controller
     }
     public function store(Request $request)
     {
-        $post = new Post;
-        $post->title = $request->title;
-        $post->description = $request->description;
-        $post->status = 1;
-        $post->user_id = auth()->user()->id;
-        $post->save();
+        $posts = $this->postService->store($request);
 
         return redirect()->route('posts.index')->with('success','Post created successfully.');
     }
@@ -101,7 +96,7 @@ class PostController extends Controller
      */
     public function edit(Request $request, $id)
     {
-        $post = Post::find($id);
+        $post = $this->postService->edit($request, $id);
         if(count($request->all()) > 0) {
             $title = $request->title;
             $description = $request->description;
@@ -111,13 +106,12 @@ class PostController extends Controller
             else{
                 $status = $request->status;
             }
-            return view('posts.edit', compact('post','title', 'description', 'status'));
         } else {
             $title = $post->title;
             $description = $post->description;
             $status = $post->status;
-            return view('posts.edit',compact('post','title', 'description', 'status'));
         }
+        return view('posts.edit', compact('post','title', 'description', 'status'));
     }
     public function editconfirm(Request $request, $id)
     {
@@ -127,7 +121,8 @@ class PostController extends Controller
             'status' => 'boolean|nullable',
         ]);
 
-        $post = Post::find($id);
+        $post=$this->postService->editConfirm($request, $id);
+
         $title = $request->title;
         $description = $request->description;
         if($request->get('status') == null){
@@ -136,7 +131,7 @@ class PostController extends Controller
         else{
             $status = $request->status;
         }
-        return view('posts.editconfirm',compact('post','title','description','status'));
+        return view('posts.editconfirm', compact('post','title','description','status'));
     }
 
     /**
@@ -146,9 +141,9 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Post $post)
+    public function update(Request $request, $id)
     {
-        $post->update($request->all());
+        $post=$this->postService->update($request, $id);
 
         return redirect()->route('posts.index')->with('success','Post updated successfully');
     }
@@ -159,9 +154,9 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Post $post)
+    public function destroy($id)
     {
-        $post->delete();
+        $post=$this->postService->destroy($id);
 
          return redirect()->route('posts.index')->with('success','post deleted successfully');
     }

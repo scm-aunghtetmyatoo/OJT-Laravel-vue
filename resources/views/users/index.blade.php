@@ -3,9 +3,14 @@
 @section('content')
 
 <div class="container">
-    @if (session('success'))
+    @if (session('status'))
         <div class="alert alert-success" role="alert">
             {{ session('status') }}
+        </div>
+    @endif
+    @if (session('success'))
+        <div class="alert alert-success" role="alert">
+            {{ session('success') }}
         </div>
     @endif
     <div class="mb-4 form-inline">

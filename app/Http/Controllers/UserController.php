@@ -6,32 +6,30 @@ use Illuminate\Http\Request;
 use App\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Gate;
-
+use App\Contracts\Services\Users\UserServiceInterface;
 
 
 class UserController extends Controller
 {
-    public function __construct(){
-        $this->middleware('auth');
+    private $userService;
+
+    public function __construct(UserServiceInterface $userService)
+    {
+        $this->userService = $userService;
+        $this->middleware('auth');  
     }
     
     public function index()
     {
         if(Gate::allows('admin')) {
-            $users = User::orderBy('id', 'desc')->paginate(config('constants.paginate.user'));
+            $users = $this->userService->getUserList();
 
             return view('users.index',compact('users'));
         }
     }
 
     public function search(Request $request){
-        // Get the search value from the request
-        $search = $request->search;
-    
-        // Search in the title and descroption columns from the posts table
-        $users = User::query()
-            ->where('name', 'like', "%{$search}%")
-            ->paginate(2);
+        $users = $this->userService->search($request);
     
         // Return the search view with the resluts compacted
         return view('users.index', compact('users'));
@@ -40,7 +38,8 @@ class UserController extends Controller
 
     public function show($id)
     {
-        $user = User::find($id);
+        $user = $this->userService->show($id);
+
         return view('users.show', compact('user'));
     }
 
@@ -106,25 +105,14 @@ class UserController extends Controller
     
     public function store(Request $request)
     {
-        $user = new User;
-        $user->name = $request->name;
-        $user->email = $request->email;
-        $user->password = Hash::make($request->password);
-        $user->type = $request->type;
-        $user->phone = $request->phone;
-        $user->dob = $request->dob;
-        $user->address = $request->address;
-        $user->profile = $request->profile;
-        $user->created_user_id = auth()->user()->id;
-
-        $user->save();
+        $user = $this->userService->store($request);
 
         return redirect()->route('users.index')->with('success','User created successfully.');
     }
 
     public function edit(Request $request, $id)
     {
-        $user = User::find($id);
+        $user = $this->userService->edit($request, $id);
 
         if(count($request->all()) > 0) {
             if($request->hasFile('profile')) {
@@ -144,7 +132,6 @@ class UserController extends Controller
             $phone = $request->phone;
             $dob = $request->dob;
             $address = $request->address;
-            return view('users.edit', compact('user','name','email','password','type','phone','dob','address','profile'));
         } else {
             $name = $user->name;
             $email = $user->email;
@@ -154,8 +141,8 @@ class UserController extends Controller
             $dob = $user->dob;
             $address = $user->address;
             $profile = $user->profile;
-            return view('users.edit', compact('user','name','email','password','type','phone','dob','address','profile'));
         }
+        return view('users.edit', compact('user','name','email','password','type','phone','dob','address','profile'));
     }
 
     public function editconfirm(Request $request, $id)
@@ -171,7 +158,7 @@ class UserController extends Controller
         ]);
 
 
-        $user = User::find($id);
+        $user = $this->userService->editconfirm($request, $id);
         
         if($request->hasFile('profile')) {
             $imagePath = $request->file('profile');
@@ -196,26 +183,14 @@ class UserController extends Controller
 
     public function update(Request $request, $id)
     {
-        $user = User::find($id);
-
-        $user->name = $request->name;
-        $user->email = $request->email;
-        $user->password = $request->password;
-        $user->type = $request->type;
-        $user->phone = $request->phone;
-        $user->dob = $request->dob;
-        $user->address = $request->address;
-        $user->profile = $request->profile;
-        $user->save();
+        $user = $this->userService->update($request, $id);
 
         return redirect()->route('users.index')->with('success','User updated successfully');
     }
 
     public function destroy($id)
     {
-        $user = User::find($id);
-
-        $user->delete();
+        $user = $this->userService->destroy($id);
 
          return redirect()->route('users.index')->with('success','User deleted successfully');
     }
