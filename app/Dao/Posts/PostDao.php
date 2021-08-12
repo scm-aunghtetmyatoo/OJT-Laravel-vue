@@ -16,7 +16,8 @@ class PostDao implements PostDaoInterface
      */
     public function getPostList()
     {
-        $posts = Post::orderBy('id', 'desc')->paginate(config('constants.paginate.post'));
+        // $posts = Post::orderBy('id', 'desc')->paginate(config('constants.paginate.post'));
+        $posts = Post::all(['id', 'title', 'description']);
 
         return $posts;
     }

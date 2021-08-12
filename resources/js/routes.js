@@ -2,6 +2,7 @@ const Welcome = () => import('./components/Welcome.vue' /* webpackChunkName: "re
 const CategoryList = () => import('./components/category/List.vue' /* webpackChunkName: "resource/js/components/category/list" */)
 const CategoryCreate = () => import('./components/category/Add.vue' /* webpackChunkName: "resource/js/components/category/add" */)
 const CategoryEdit = () => import('./components/category/Edit.vue' /* webpackChunkName: "resource/js/components/category/edit" */)
+const PostList = () => import('./components/post/List.vue' /* webpackChunkName: "resource/js/components/category/edit" */)
 
 export const routes = [
     {
@@ -11,7 +12,7 @@ export const routes = [
     },
     {
         name: 'categoryList',
-        path: '/category',
+        path: '/categories',
         component: CategoryList
     },
     {
@@ -23,5 +24,11 @@ export const routes = [
         name: 'categoryAdd',
         path: '/category/add',
         component: CategoryCreate
+    },
+
+    {
+        name: 'postList',
+        path: '/posts',
+        component: PostList
     }
 ]

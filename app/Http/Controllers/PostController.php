@@ -16,7 +16,6 @@ class PostController extends Controller
     public function __construct(PostServiceInterface $postService)
     {
         $this->postService = $postService;
-        $this->middleware('auth');  
     }
     /**
      * Display a listing of the resource.
@@ -27,7 +26,7 @@ class PostController extends Controller
     {
         $posts = $this->postService->getPostList();
 
-        return view('posts.index',compact('posts'));
+        return response()->json($posts);
     }
 
     public function search(Request $request){

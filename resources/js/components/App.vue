@@ -6,11 +6,14 @@
                 <div class="collapse navbar-collapse">
                     <div class="navbar-nav">
                         <router-link exact-active-class="active" to="/" class="nav-item nav-link">Home</router-link>
-                        <router-link exact-active-class="active" to="/category" class="nav-item nav-link">Category</router-link>
+                        <router-link exact-active-class="active" to="/categories" class="nav-item nav-link">Category</router-link>
+                        <router-link exact-active-class="active" to="/posts" class="nav-item nav-link">Posts</router-link>
                     </div>
                 </div>
             </div>
         </nav>
+
+       
         <div class="container mt-5">
             <router-view></router-view>
         </div>
@@ -20,3 +23,4 @@
 <script>
     export default {}
 </script>
+
