@@ -1,7 +1,7 @@
 <template>
     <div class="row">
         <div class="col-12 mb-2 text-end">
-            <router-link :to='{name:"categoryAdd"}' class="btn btn-primary">Create</router-link>
+            <router-link :to='{name:"postCreate"}' class="btn btn-primary">Create</router-link>
         </div>
         <div class="col-12">
             <div class="card">
@@ -65,8 +65,8 @@ export default {
         },
         deletepost(id){
             if(confirm("Are you sure to delete this post ?")){
-                this.axios.delete(`/api/post/${id}`).then(response=>{
-                    this.getposts()
+                this.axios.delete(`/api/posts/${id}`).then(response=>{
+                    this.getPosts()
                 }).catch(error=>{
                     console.log(error)
                 })

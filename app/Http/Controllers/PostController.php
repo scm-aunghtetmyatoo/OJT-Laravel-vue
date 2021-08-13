@@ -71,9 +71,12 @@ class PostController extends Controller
     }
     public function store(Request $request)
     {
-        $posts = $this->postService->store($request);
+        $post = $this->postService->store($request);
 
-        return redirect()->route('posts.index')->with('success','Post created successfully.');
+        return response()->json([
+            'message'=>'Post Created Successfully!!',
+            'post'=>$post
+        ]);
     }
 
     /**
@@ -82,9 +85,10 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Post $post)
     {
-        //
+        return response()->json($post);
+
     }
 
     /**
@@ -140,11 +144,14 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Post $post)
     {
-        $post=$this->postService->update($request, $id);
+        $post=$this->postService->update($request, $post);
 
-        return redirect()->route('posts.index')->with('success','Post updated successfully');
+        return response()->json([
+            'message'=>'Post Updated Successfully!!',
+            'post'=>$post
+        ]);    
     }
 
     /**
@@ -153,11 +160,13 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Post $post)
     {
-        $post=$this->postService->destroy($id);
+        $post=$this->postService->destroy($post);
 
-         return redirect()->route('posts.index')->with('success','post deleted successfully');
+        return response()->json([
+            'message'=>'Post Deleted Successfully!!'
+        ]);    
     }
 
     public function export() 

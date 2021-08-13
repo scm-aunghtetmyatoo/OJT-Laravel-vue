@@ -1867,6 +1867,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({});
 
 /***/ }),
@@ -1967,46 +1968,69 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "routes": () => (/* binding */ routes)
 /* harmony export */ });
-var Welcome = function Welcome() {
-  return __webpack_require__.e(/*! import() | resource/js/components/welcome */ "resource/js/components/welcome").then(__webpack_require__.bind(__webpack_require__, /*! ./components/Welcome.vue */ "./resources/js/components/Welcome.vue"));
+var UserList = function UserList() {
+  return __webpack_require__.e(/*! import() */ "resources_js_components_user_List_vue").then(__webpack_require__.bind(__webpack_require__, /*! ./components/user/List.vue */ "./resources/js/components/user/List.vue"));
 };
 
-var CategoryList = function CategoryList() {
-  return __webpack_require__.e(/*! import() | resource/js/components/category/list */ "resource/js/components/category/list").then(__webpack_require__.bind(__webpack_require__, /*! ./components/category/List.vue */ "./resources/js/components/category/List.vue"));
+var UserCreate = function UserCreate() {
+  return __webpack_require__.e(/*! import() */ "resources_js_components_user_Create_vue").then(__webpack_require__.bind(__webpack_require__, /*! ./components/user/Create.vue */ "./resources/js/components/user/Create.vue"));
 };
 
-var CategoryCreate = function CategoryCreate() {
-  return __webpack_require__.e(/*! import() | resource/js/components/category/add */ "resource/js/components/category/add").then(__webpack_require__.bind(__webpack_require__, /*! ./components/category/Add.vue */ "./resources/js/components/category/Add.vue"));
-};
-
-var CategoryEdit = function CategoryEdit() {
-  return __webpack_require__.e(/*! import() | resource/js/components/category/edit */ "resource/js/components/category/edit").then(__webpack_require__.bind(__webpack_require__, /*! ./components/category/Edit.vue */ "./resources/js/components/category/Edit.vue"));
+var UserEdit = function UserEdit() {
+  return __webpack_require__.e(/*! import() */ "resources_js_components_user_Edit_vue").then(__webpack_require__.bind(__webpack_require__, /*! ./components/user/Edit.vue */ "./resources/js/components/user/Edit.vue"));
 };
 
 var PostList = function PostList() {
-  return __webpack_require__.e(/*! import() | resource/js/components/category/edit */ "resource/js/components/category/edit").then(__webpack_require__.bind(__webpack_require__, /*! ./components/post/List.vue */ "./resources/js/components/post/List.vue"));
+  return __webpack_require__.e(/*! import() */ "resources_js_components_post_List_vue").then(__webpack_require__.bind(__webpack_require__, /*! ./components/post/List.vue */ "./resources/js/components/post/List.vue"));
+};
+
+var PostCreate = function PostCreate() {
+  return __webpack_require__.e(/*! import() */ "resources_js_components_post_Create_vue").then(__webpack_require__.bind(__webpack_require__, /*! ./components/post/Create.vue */ "./resources/js/components/post/Create.vue"));
+};
+
+var PostEdit = function PostEdit() {
+  return __webpack_require__.e(/*! import() */ "resources_js_components_post_Edit_vue").then(__webpack_require__.bind(__webpack_require__, /*! ./components/post/Edit.vue */ "./resources/js/components/post/Edit.vue"));
+};
+
+var Login = function Login() {
+  return __webpack_require__.e(/*! import() */ "resources_js_components_auth_Login_vue").then(__webpack_require__.bind(__webpack_require__, /*! ./components/auth/Login.vue */ "./resources/js/components/auth/Login.vue"));
 };
 
 var routes = [{
-  name: 'home',
-  path: '/',
-  component: Welcome
+  path: '/login',
+  name: 'login',
+  component: Login,
+  meta: {
+    auth: false
+  }
 }, {
   name: 'categoryList',
-  path: '/categories',
-  component: CategoryList
-}, {
-  name: 'categoryEdit',
-  path: '/category/:id/edit',
-  component: CategoryEdit
-}, {
-  name: 'categoryAdd',
-  path: '/category/add',
-  component: CategoryCreate
+  path: '/',
+  component: PostList
 }, {
   name: 'postList',
   path: '/posts',
   component: PostList
+}, {
+  name: 'postCreate',
+  path: '/posts/create',
+  component: PostCreate
+}, {
+  name: 'postEdit',
+  path: '/posts/:id/edit',
+  component: PostEdit
+}, {
+  name: 'userList',
+  path: '/users',
+  component: UserList
+}, {
+  name: 'userEdit',
+  path: '/users/:id/edit',
+  component: UserEdit
+}, {
+  name: 'userCreate',
+  path: '/users/create',
+  component: UserCreate
 }];
 
 /***/ }),
@@ -37515,18 +37539,9 @@ var render = function() {
                   "router-link",
                   {
                     staticClass: "nav-item nav-link",
-                    attrs: { "exact-active-class": "active", to: "/" }
+                    attrs: { "exact-active-class": "active", to: "/users" }
                   },
-                  [_vm._v("Home")]
-                ),
-                _vm._v(" "),
-                _c(
-                  "router-link",
-                  {
-                    staticClass: "nav-item nav-link",
-                    attrs: { "exact-active-class": "active", to: "/categories" }
-                  },
-                  [_vm._v("Category")]
+                  [_vm._v("Users")]
                 ),
                 _vm._v(" "),
                 _c(
@@ -52979,7 +52994,7 @@ Vue.compile = compileToFunctions;
 /******/ 		// This function allow to reference async chunks
 /******/ 		__webpack_require__.u = (chunkId) => {
 /******/ 			// return url for filenames not based on template
-/******/ 			if ({"resource/js/components/welcome":1,"resource/js/components/category/list":1,"resource/js/components/category/add":1,"resource/js/components/category/edit":1}[chunkId]) return "js/" + chunkId + ".js";
+/******/ 			if ({"resources_js_components_user_List_vue":1,"resources_js_components_user_Create_vue":1,"resources_js_components_user_Edit_vue":1,"resources_js_components_post_List_vue":1,"resources_js_components_post_Create_vue":1,"resources_js_components_post_Edit_vue":1,"resources_js_components_auth_Login_vue":1}[chunkId]) return "js/" + chunkId + ".js";
 /******/ 			// return url for filenames based on template
 /******/ 			return undefined;
 /******/ 		};

@@ -40,7 +40,7 @@ Route::get('users/{id}/edit', 'UserController@edit')->name('users.edit');
 Route::post('users/{id}/edit', 'UserController@edit')->name('users.edit');
 Route::post('users/{id}/editconfirm', 'UserController@editconfirm')->name('users.editconfirm');
 Route::post('users/{id}/update', 'UserController@update')->name('users.update');
-Route::post('users/{id}/destroy', 'UserController@destroy')->name('users.destroy');
+Route::delete('users/{id}/destroy', 'UserController@destroy')->name('users.destroy');
 Route::post('users/search', 'UserController@search')->name('users.search');
 
 Route::get('change-password/{id}', 'ChangePasswordController@index');
