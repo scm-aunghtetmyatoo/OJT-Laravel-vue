@@ -14,11 +14,18 @@ class PostDao implements PostDaoInterface
      *
      * @return void
      */
-    public function getPostList()
+    public function getPostList($request)
     {
         // $posts = Post::orderBy('id', 'desc')->paginate(config('constants.paginate.post'));
         // $posts = Post::all(['id', 'title', 'description']);
-        $posts = Post::orderBy('id', 'desc')->get();
+        // $posts = Post::orderBy('id', 'desc')->paginate(4);
+
+        if($request->search){
+            return Post::where('title', 'like', '%' . $request->search . '%')
+            ->orderBy('id', 'desc')->paginate(4);
+        }else{
+            $posts = Post::orderBy('id', 'desc')->paginate(4);
+        }
 
         return $posts;
     }
@@ -30,7 +37,11 @@ class PostDao implements PostDaoInterface
         // $post->status = 1;
         // $post->user_id = 1;
         // $post->save();
-        $post = Post::create($request->post());
+        $post = Post::create([
+            'title' => $request->title,
+            'description' => $request->description,
+
+        ]);
 
         return $post;
     }

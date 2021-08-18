@@ -5,7 +5,7 @@ use Illuminate\Http\Request;
 
 interface PostDaoInterface 
 {
-    public function getPostList();
+    public function getPostList($request);
 
     public function store($request);
 

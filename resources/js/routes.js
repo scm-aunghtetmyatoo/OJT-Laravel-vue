@@ -5,24 +5,28 @@ const UserEdit = () => import('./components/user/Edit.vue')
 const PostList = () => import('./components/post/List.vue')
 const PostCreate = () => import('./components/post/Create.vue')
 const PostEdit = () => import('./components/post/Edit.vue')
+const Upload = () => import('./components/post/Upload.vue')
 
-const Login = () => import('./components/auth/Login.vue')
+const Secret = () => import('./components/auth/Secret.vue')
+
+
+const Welcome = () => import('./components/Welcome.vue')
+
 
 
 export const routes = [
     {
-        path: '/login',
-        name: 'login',
-        component: Login,
-        meta: {
-          auth: false
-        }
+        path: '/secret',
+        name: 'secret',
+        component: Secret,
     },
+    
+     
 
     {
         name: 'categoryList',
         path: '/',
-        component: PostList
+        component: Welcome
     },
     {
         name: 'postList',
@@ -38,6 +42,11 @@ export const routes = [
         name: 'postEdit',
         path: '/posts/:id/edit',
         component: PostEdit
+    },
+    {
+        name: 'postUpload',
+        path: '/posts/upload',
+        component: Upload
     },
 
     {

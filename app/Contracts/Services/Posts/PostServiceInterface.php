@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 
 interface PostServiceInterface 
 {
-    public function getPostList();
+    public function getPostList($request);
 
     public function store($request);
 

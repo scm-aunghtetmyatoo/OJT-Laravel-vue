@@ -98,7 +98,7 @@ export default {
             })
         },
         async update(){
-            await this.axios.post(`/api/users/update/${this.$route.params.id}`,this.user).then(response=>{
+            await this.axios.post(`/api/users/${this.$route.params.id}`,this.user).then(response=>{
                 this.$router.push({name:"userList"})
             }).catch(error=>{
                 console.log(error)

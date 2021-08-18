@@ -56,7 +56,7 @@ __webpack_require__.r(__webpack_exports__);
         },
         success: function success() {
           // handle redirection
-          var redirectTo = redirect ? redirect.from.name : this.$auth.user().role === 2 ? 'admin.dashboard' : 'dashboard';
+          var redirectTo = redirect ? redirect.from.name : this.$auth.user().type == "admin" ? 'admin.dashboard' : 'dashboard';
           this.$router.push({
             name: redirectTo
           });

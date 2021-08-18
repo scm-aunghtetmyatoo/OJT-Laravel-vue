@@ -160,7 +160,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             switch (_context2.prev = _context2.next) {
               case 0:
                 _context2.next = 2;
-                return _this2.axios.post("/api/users/update/".concat(_this2.$route.params.id), _this2.user).then(function (response) {
+                return _this2.axios.post("/api/users/".concat(_this2.$route.params.id), _this2.user).then(function (response) {
                   _this2.$router.push({
                     name: "userList"
                   });

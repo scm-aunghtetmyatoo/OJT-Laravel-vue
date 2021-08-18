@@ -29,9 +29,9 @@ class PostService implements PostServiceInterface
      *
      * @return void
      */
-    public function getPostList()
+    public function getPostList($request)
     {
-        return $this->postDao->getPostList();
+        return $this->postDao->getPostList($request);
     }
 
     public function store($request)

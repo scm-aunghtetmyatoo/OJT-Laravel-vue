@@ -94,6 +94,23 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "add-user",
   data: function data() {
@@ -105,21 +122,36 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         type: "",
         phone: "",
         dob: "",
-        address: ""
-      }
+        address: "",
+        profile: ""
+      },
+      showPassword: false
     };
   },
   methods: {
+    onFileChange: function onFileChange(event) {
+      this.user.profile = event.target.files[0];
+    },
     create: function create() {
       var _this = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
+        var formData;
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                _context.next = 2;
-                return _this.axios.post('/api/users/store', _this.user).then(function (response) {
+                formData = new FormData();
+                formData.append("name", _this.user.name);
+                formData.append("email", _this.user.email);
+                formData.append("password", _this.user.password);
+                formData.append("type", _this.user.type);
+                formData.append("phone", _this.user.phone);
+                formData.append("dob", _this.user.dob);
+                formData.append("address", _this.user.address);
+                formData.append("profile", _this.user.profile);
+                _context.next = 11;
+                return _this.axios.post('/api/users/store', formData).then(function (response) {
                   _this.$router.push({
                     name: "userList"
                   });
@@ -127,7 +159,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   console.log(error);
                 });
 
-              case 2:
+              case 11:
               case "end":
                 return _context.stop();
             }
@@ -1001,6 +1033,7 @@ var render = function() {
           _c(
             "form",
             {
+              attrs: { enctype: "multipart/form-data" },
               on: {
                 submit: function($event) {
                   $event.preventDefault()
@@ -1070,27 +1103,62 @@ var render = function() {
                   _c("div", { staticClass: "form-group" }, [
                     _c("label", [_vm._v("Password")]),
                     _vm._v(" "),
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.user.password,
-                          expression: "user.password"
-                        }
-                      ],
-                      staticClass: "form-control",
-                      attrs: { type: "password" },
-                      domProps: { value: _vm.user.password },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.$set(_vm.user, "password", $event.target.value)
-                        }
-                      }
-                    })
+                    _c("div", { staticClass: "input-group" }, [
+                      [_vm.showPassword ? "text" : "password"] === "checkbox"
+                        ? 0
+                        : [_vm.showPassword ? "text" : "password"] === "radio"
+                        ? 0
+                        : _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.user.password,
+                                expression: "user.password"
+                              }
+                            ],
+                            staticClass: "form-control",
+                            attrs: {
+                              type: [_vm.showPassword ? "text" : "password"]
+                            },
+                            domProps: { value: _vm.user.password },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  _vm.user,
+                                  "password",
+                                  $event.target.value
+                                )
+                              }
+                            }
+                          }),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "input-group-append" }, [
+                        _c(
+                          "span",
+                          {
+                            staticClass: "input-group-text",
+                            on: {
+                              click: function($event) {
+                                _vm.showPassword = !_vm.showPassword
+                              }
+                            }
+                          },
+                          [
+                            _c("i", {
+                              staticClass: "fa",
+                              class: [
+                                _vm.showPassword ? "fa-eye" : "fa-eye-slash"
+                              ],
+                              attrs: { "aria-hidden": "true" }
+                            })
+                          ]
+                        )
+                      ])
+                    ])
                   ])
                 ]),
                 _vm._v(" "),
@@ -1202,6 +1270,18 @@ var render = function() {
                           _vm.$set(_vm.user, "address", $event.target.value)
                         }
                       }
+                    })
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "col-12 mb-2" }, [
+                  _c("div", { staticClass: "form-group" }, [
+                    _c("label", [_vm._v("Profile")]),
+                    _vm._v(" "),
+                    _c("input", {
+                      staticClass: "form-control-file",
+                      attrs: { type: "file", name: "profile", id: "profile" },
+                      on: { change: _vm.onFileChange }
                     })
                   ])
                 ]),

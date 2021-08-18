@@ -44,4 +44,9 @@ class User extends Authenticatable
     public function created_user() {
         return $this->belongsTo('App\User', 'created_user_id');
     }
+
+    public function secrets()
+    {
+        return $this->hasMany('App\Secret');
+    }
 }

@@ -32,20 +32,24 @@ class UserDao implements UserDaoInterface
     }
 
     public function store($request){
-        // $user = new User;
-        // $user->name = $request->name;
-        // $user->email = $request->email;
-        // $user->password = Hash::make($request->password);
-        // $user->type = $request->type;
-        // $user->phone = $request->phone;
-        // $user->dob = $request->dob;
-        // $user->address = $request->address;
-        // $user->profile = 'sldjflkkj.jpg';
-        // $user->created_user_id = 1;
-        // $user->updated_user_id = 1;
-        // $user->save();
-        $user = User::create($request->post());
+        $user = new User();
+        if($request->hasFile('profile'))
+        {
+            // $imagePath = $request->file('profile');
+            $imageName = $request->profile->getClientOriginalName();
+            $request->file('profile')->storeAs('uploads', $imageName, 'public');
+            $user->profile = $imageName;
+            
+        } 
 
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->password = Hash::make($request->password);
+        $user->type = $request->type;
+        $user->phone = $request->phone;
+        $user->dob = $request->dob;
+        $user->address = $request->address;
+        $user->save();
 
         return $user;
     }

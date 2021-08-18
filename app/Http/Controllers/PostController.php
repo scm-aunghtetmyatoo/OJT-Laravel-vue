@@ -22,9 +22,9 @@ class PostController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        $posts = $this->postService->getPostList();
+    public function index(Request $request)
+    {   
+        $posts = $this->postService->getPostList($request);
 
         return response()->json($posts);
     }
@@ -181,7 +181,9 @@ class PostController extends Controller
     {
         Excel::import(new PostsImport,request()->file('file'));
            
-        return redirect()->route('posts.index')->with('success','Import Process successfully');
+        return response()->json([
+            'message'=>'Post Upload Successfully!!'
+        ]);
     }
     public function upload()
     {

@@ -17,6 +17,7 @@
                                     <th>Name</th>
                                     <th>Email</th>
                                     <th>Address</th>
+                                    <th>Image</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -26,6 +27,9 @@
                                     <td>{{ user.name }}</td>
                                     <td>{{ user.email }}</td>
                                     <td>{{ user.address }}</td>
+                                    <td>
+                                        <img :src="path + user.profile" height="200px" width="180px">
+                                    </td>
                                     <td>
                                         <router-link :to='{name:"userEdit",params:{id:user.id}}' class="btn btn-success">Edit</router-link>
                                         <button type="button" @click="deleteuser(user.id)" class="btn btn-danger">Delete</button>
@@ -50,7 +54,8 @@ export default {
     name:"users",
     data(){
         return {
-            users:[]
+            users:[],
+            path: "storage/uploads/"
         }
     },
     mounted(){
@@ -67,7 +72,7 @@ export default {
         },
         deleteuser(id){
             if(confirm("Are you sure to delete this user ?")){
-                this.axios.post(`/api/users/${id}/destroy`, { _method: 'delete' }).then(response=>{
+                this.axios.delete(`/api/users/${id}`).then(response=>{
                     this.getUsers()
                 }).catch(error=>{
                     console.log(error)

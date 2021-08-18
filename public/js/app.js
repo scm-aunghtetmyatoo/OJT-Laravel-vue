@@ -1,6 +1,184 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
+/***/ "./node_modules/@websanova/vue-auth/dist/drivers/auth/bearer.js":
+/*!**********************************************************************!*\
+  !*** ./node_modules/@websanova/vue-auth/dist/drivers/auth/bearer.js ***!
+  \**********************************************************************/
+/***/ (function(module) {
+
+/*!
+ * @websanova/vue-auth v4.1.4
+ * https://websanova.com/docs/vue-auth
+ * Released under the MIT License.
+ */
+
+(function (global, factory) {
+     true ? module.exports = factory() :
+    0;
+}(this, (function () { 'use strict';
+
+    var bearer = {
+      request: function (req, token) {
+        this.drivers.http.setHeaders.call(this, req, {
+          Authorization: 'Bearer ' + token
+        });
+      },
+      response: function (res) {
+        var headers = this.drivers.http.getHeaders.call(this, res),
+            token = headers.Authorization || headers.authorization;
+
+        if (token) {
+          token = token.split(/Bearer:?\s?/i);
+          return token[token.length > 1 ? 1 : 0].trim();
+        }
+      }
+    };
+
+    return bearer;
+
+})));
+
+
+/***/ }),
+
+/***/ "./node_modules/@websanova/vue-auth/dist/drivers/http/axios.1.x.js":
+/*!*************************************************************************!*\
+  !*** ./node_modules/@websanova/vue-auth/dist/drivers/http/axios.1.x.js ***!
+  \*************************************************************************/
+/***/ (function(module) {
+
+/*!
+ * @websanova/vue-auth v4.1.4
+ * https://websanova.com/docs/vue-auth
+ * Released under the MIT License.
+ */
+
+(function (global, factory) {
+     true ? module.exports = factory() :
+    0;
+}(this, (function () { 'use strict';
+
+    var axios_1_x = {
+      init: function () {
+        if (!this.plugins.http) {
+          return 'drivers/http/axios.js: http plugin has not been set.';
+        }
+      },
+      interceptor: function (req, res) {
+        var _this = this;
+
+        if (req) {
+          this.plugins.http.interceptors.request.use(function (request) {
+            req.call(_this, request);
+            return request;
+          }, function (error) {
+            req.call(_this, error.request);
+            return Promise.reject(error);
+          });
+        }
+
+        if (res) {
+          this.plugins.http.interceptors.response.use(function (response) {
+            res.call(_this, response);
+            return response;
+          }, function (error) {
+            if (error && error.response) {
+              res.call(_this, error.response);
+            }
+
+            return Promise.reject(error);
+          });
+        }
+      },
+      invalidToken: function (res) {
+        if (res.status === 401) {
+          return true;
+        }
+      },
+      httpData: function (res) {
+        return res.data || {};
+      },
+      http: function (data) {
+        return this.plugins.http(data);
+      },
+      getHeaders: function (res) {
+        return res.headers;
+      },
+      setHeaders: function (req, headers) {
+        req.headers.common = Object.assign({}, req.headers.common, headers);
+      }
+    };
+
+    return axios_1_x;
+
+})));
+
+
+/***/ }),
+
+/***/ "./node_modules/@websanova/vue-auth/dist/drivers/router/vue-router.2.x.js":
+/*!********************************************************************************!*\
+  !*** ./node_modules/@websanova/vue-auth/dist/drivers/router/vue-router.2.x.js ***!
+  \********************************************************************************/
+/***/ (function(module) {
+
+/*!
+ * @websanova/vue-auth v4.1.4
+ * https://websanova.com/docs/vue-auth
+ * Released under the MIT License.
+ */
+
+(function (global, factory) {
+     true ? module.exports = factory() :
+    0;
+}(this, (function () { 'use strict';
+
+    var vueRouter_2_x = {
+      init: function () {
+        if (!this.plugins.router) {
+          return 'drivers/router/vue-router.2.x.js: router plugin has not been set.';
+        }
+      },
+      beforeEach: function (routerBeforeEach, transitionEach, setTransitions, getAuthMeta) {
+        var _this = this;
+
+        this.plugins.router.beforeEach(function (transition, location, next) {
+          setTransitions(transition);
+          routerBeforeEach.call(_this, function () {
+            var auth = getAuthMeta(transition);
+            transitionEach.call(_this, transition, auth, function (redirect) {
+              if (!redirect) {
+                (next || transition.next)();
+                return;
+              } // router v2.x
+
+
+              if (next) {
+                next(redirect);
+              } else {
+                this.router._routerReplace.call(this, redirect);
+              }
+            });
+          });
+        });
+      },
+      routerReplace: function (data) {
+        this.plugins.router.replace.call(router, data);
+      },
+      routerGo: function (data) {
+        var router = this.plugins.router;
+        (router.push || router.go).call(router, data).catch(function (err) {});
+      }
+    };
+
+    return vueRouter_2_x;
+
+})));
+
+
+/***/ }),
+
 /***/ "./node_modules/axios/index.js":
 /*!*************************************!*\
   !*** ./node_modules/axios/index.js ***!
@@ -1882,12 +2060,13 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js");
 /* harmony import */ var _components_App_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./components/App.vue */ "./resources/js/components/App.vue");
-/* harmony import */ var vue_router__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! vue-router */ "./node_modules/vue-router/dist/vue-router.esm.js");
+/* harmony import */ var vue_router__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! vue-router */ "./node_modules/vue-router/dist/vue-router.esm.js");
 /* harmony import */ var vue_axios__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vue-axios */ "./node_modules/vue-axios/dist/vue-axios.es5.js");
 /* harmony import */ var vue_axios__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(vue_axios__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_3__);
 /* harmony import */ var _routes__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./routes */ "./resources/js/routes.js");
+/* harmony import */ var _auth__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./auth */ "./resources/js/auth.js");
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 
@@ -1896,10 +2075,22 @@ window.Vue = vue__WEBPACK_IMPORTED_MODULE_0__.default;
 
 
 
+ // import 'es6-promise/auto'
+// import * as VueAuth from '@websanova/vue-auth';
+// import * as VueAuth from '@websanova/vue-auth/dist/v2/vue-auth.esm.js';
 
-Vue.use(vue_router__WEBPACK_IMPORTED_MODULE_5__.default);
-Vue.use((vue_axios__WEBPACK_IMPORTED_MODULE_2___default()), (axios__WEBPACK_IMPORTED_MODULE_3___default()));
-var router = new vue_router__WEBPACK_IMPORTED_MODULE_5__.default({
+
+Vue.use(vue_router__WEBPACK_IMPORTED_MODULE_6__.default);
+Vue.use((vue_axios__WEBPACK_IMPORTED_MODULE_2___default()), (axios__WEBPACK_IMPORTED_MODULE_3___default())); // axios.defaults.baseURL = `${process.env.MIX_APP_URL}/api`;
+// Vue.use(VueAuth, auth);
+// Vue.use(VueAuth, {
+//     auth: require('@websanova/vue-auth/dist/drivers/auth/bearer.js'),
+//     http: require('@websanova/vue-auth/dist/drivers/http/axios.1.x.js'),
+//     router: require('@websanova/vue-auth/dist/drivers/router/vue-router.2.x.js'),
+//     rolesVar: 'role'
+//   });
+
+var router = new vue_router__WEBPACK_IMPORTED_MODULE_6__.default({
   mode: 'history',
   routes: _routes__WEBPACK_IMPORTED_MODULE_4__.routes
 });
@@ -1910,6 +2101,68 @@ var app = new Vue({
     return h(_components_App_vue__WEBPACK_IMPORTED_MODULE_1__.default);
   }
 });
+
+/***/ }),
+
+/***/ "./resources/js/auth.js":
+/*!******************************!*\
+  !*** ./resources/js/auth.js ***!
+  \******************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _websanova_vue_auth_dist_drivers_auth_bearer_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @websanova/vue-auth/dist/drivers/auth/bearer.js */ "./node_modules/@websanova/vue-auth/dist/drivers/auth/bearer.js");
+/* harmony import */ var _websanova_vue_auth_dist_drivers_auth_bearer_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_websanova_vue_auth_dist_drivers_auth_bearer_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _websanova_vue_auth_dist_drivers_http_axios_1_x_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @websanova/vue-auth/dist/drivers/http/axios.1.x.js */ "./node_modules/@websanova/vue-auth/dist/drivers/http/axios.1.x.js");
+/* harmony import */ var _websanova_vue_auth_dist_drivers_http_axios_1_x_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_websanova_vue_auth_dist_drivers_http_axios_1_x_js__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _websanova_vue_auth_dist_drivers_router_vue_router_2_x_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @websanova/vue-auth/dist/drivers/router/vue-router.2.x.js */ "./node_modules/@websanova/vue-auth/dist/drivers/router/vue-router.2.x.js");
+/* harmony import */ var _websanova_vue_auth_dist_drivers_router_vue_router_2_x_js__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_websanova_vue_auth_dist_drivers_router_vue_router_2_x_js__WEBPACK_IMPORTED_MODULE_2__);
+
+
+ // Auth base configuration some of this options
+// can be override in method calls
+
+var config = {
+  auth: (_websanova_vue_auth_dist_drivers_auth_bearer_js__WEBPACK_IMPORTED_MODULE_0___default()),
+  http: (_websanova_vue_auth_dist_drivers_http_axios_1_x_js__WEBPACK_IMPORTED_MODULE_1___default()),
+  router: (_websanova_vue_auth_dist_drivers_router_vue_router_2_x_js__WEBPACK_IMPORTED_MODULE_2___default()),
+  tokenDefaultName: 'blog',
+  tokenStore: ['localStorage'],
+  rolesVar: 'role',
+  registerData: {
+    url: 'auth/register',
+    method: 'POST',
+    redirect: '/login'
+  },
+  loginData: {
+    url: 'auth/login',
+    method: 'POST',
+    redirect: '',
+    fetchUser: true
+  },
+  logoutData: {
+    url: 'auth/logout',
+    method: 'POST',
+    redirect: '/',
+    makeRequest: true
+  },
+  fetchData: {
+    url: 'auth/user',
+    method: 'GET',
+    enabled: true
+  },
+  refreshData: {
+    url: 'auth/refresh',
+    method: 'GET',
+    enabled: true,
+    interval: 30
+  }
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (config);
 
 /***/ }),
 
@@ -1992,21 +2245,26 @@ var PostEdit = function PostEdit() {
   return __webpack_require__.e(/*! import() */ "resources_js_components_post_Edit_vue").then(__webpack_require__.bind(__webpack_require__, /*! ./components/post/Edit.vue */ "./resources/js/components/post/Edit.vue"));
 };
 
-var Login = function Login() {
-  return __webpack_require__.e(/*! import() */ "resources_js_components_auth_Login_vue").then(__webpack_require__.bind(__webpack_require__, /*! ./components/auth/Login.vue */ "./resources/js/components/auth/Login.vue"));
+var Upload = function Upload() {
+  return __webpack_require__.e(/*! import() */ "resources_js_components_post_Upload_vue").then(__webpack_require__.bind(__webpack_require__, /*! ./components/post/Upload.vue */ "./resources/js/components/post/Upload.vue"));
+};
+
+var Secret = function Secret() {
+  return __webpack_require__.e(/*! import() */ "resources_js_components_auth_Secret_vue").then(__webpack_require__.bind(__webpack_require__, /*! ./components/auth/Secret.vue */ "./resources/js/components/auth/Secret.vue"));
+};
+
+var Welcome = function Welcome() {
+  return __webpack_require__.e(/*! import() */ "resources_js_components_Welcome_vue").then(__webpack_require__.bind(__webpack_require__, /*! ./components/Welcome.vue */ "./resources/js/components/Welcome.vue"));
 };
 
 var routes = [{
-  path: '/login',
-  name: 'login',
-  component: Login,
-  meta: {
-    auth: false
-  }
+  path: '/secret',
+  name: 'secret',
+  component: Secret
 }, {
   name: 'categoryList',
   path: '/',
-  component: PostList
+  component: Welcome
 }, {
   name: 'postList',
   path: '/posts',
@@ -2019,6 +2277,10 @@ var routes = [{
   name: 'postEdit',
   path: '/posts/:id/edit',
   component: PostEdit
+}, {
+  name: 'postUpload',
+  path: '/posts/upload',
+  component: Upload
 }, {
   name: 'userList',
   path: '/users',
@@ -52994,7 +53256,7 @@ Vue.compile = compileToFunctions;
 /******/ 		// This function allow to reference async chunks
 /******/ 		__webpack_require__.u = (chunkId) => {
 /******/ 			// return url for filenames not based on template
-/******/ 			if ({"resources_js_components_user_List_vue":1,"resources_js_components_user_Create_vue":1,"resources_js_components_user_Edit_vue":1,"resources_js_components_post_List_vue":1,"resources_js_components_post_Create_vue":1,"resources_js_components_post_Edit_vue":1,"resources_js_components_auth_Login_vue":1}[chunkId]) return "js/" + chunkId + ".js";
+/******/ 			if ({"resources_js_components_user_List_vue":1,"resources_js_components_user_Create_vue":1,"resources_js_components_user_Edit_vue":1,"resources_js_components_post_List_vue":1,"resources_js_components_post_Create_vue":1,"resources_js_components_post_Edit_vue":1,"resources_js_components_post_Upload_vue":1,"resources_js_components_auth_Secret_vue":1,"resources_js_components_Welcome_vue":1}[chunkId]) return "js/" + chunkId + ".js";
 /******/ 			// return url for filenames based on template
 /******/ 			return undefined;
 /******/ 		};
