@@ -7,19 +7,16 @@ const PostCreate = () => import('./components/post/Create.vue')
 const PostEdit = () => import('./components/post/Edit.vue')
 const Upload = () => import('./components/post/Upload.vue')
 
-const Secret = () => import('./components/auth/Secret.vue')
-
 
 const Welcome = () => import('./components/Welcome.vue')
+
+const User = () => import('./components/User.vue')
+const Login = () => import('./components/user/Login.vue')
+
 
 
 
 export const routes = [
-    {
-        path: '/secret',
-        name: 'secret',
-        component: Secret,
-    },
     
      
 
@@ -64,6 +61,28 @@ export const routes = [
         path: '/users/create',
         component: UserCreate
     },
+
+    {
+        name: 'login',
+        path: '/login',
+        component: Login,
+        meta: { guestOnly: true }
+    },
+    {
+        name: "user",
+        path: '/user',
+        component: User,
+        beforeEnter: (to, from, next) => {
+            
+            let auth = localStorage.getItem('auth');
+            if(auth){
+                next();
+            }else{
+                next('/login');
+            }
+
+        }
+    }
 
     
 ]

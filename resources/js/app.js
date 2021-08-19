@@ -20,6 +20,7 @@ import auth from './auth'
 Vue.use(VueRouter);
 Vue.use(VueAxios, axios);
 
+
 // axios.defaults.baseURL = `${process.env.MIX_APP_URL}/api`;
 // Vue.use(VueAuth, auth);
 // Vue.use(VueAuth, {

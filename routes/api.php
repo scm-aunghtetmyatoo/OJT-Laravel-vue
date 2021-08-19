@@ -13,9 +13,26 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+// Auth::routes();
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
+
+Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
+});
+
+// Route::middleware('auth:api')->get('/users', function (Request $request) {
+
+//     return response()->json(['name' => Auth::User()->name]);
+
+// });
+
+Route::post('login', 'AuthController@login');
+  
+Route::group(['middleware' => 'auth.api'], function() {
+    Route::get('logout', 'AuthController@logout');
 });
 
 
@@ -54,7 +71,7 @@ Route::post('/email', 'EmailController@sendEmail')->name('send.email');
 // test route for service_dao_structure
 Route::get('/test', TestController::class . '@getList');
 
-Route::get('/secrets', 'SecretController@index');
+// Route::get('/secrets', 'SecretController@index');
 
 
 // Route::prefix('auth')->group(function () {

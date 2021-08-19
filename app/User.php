@@ -6,12 +6,12 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
-
+use Laravel\Passport\HasApiTokens;
 
 
 class User extends Authenticatable
 {
-    use Notifiable, SoftDeletes;
+    use HasApiTokens, Notifiable, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -45,8 +45,4 @@ class User extends Authenticatable
         return $this->belongsTo('App\User', 'created_user_id');
     }
 
-    public function secrets()
-    {
-        return $this->hasMany('App\Secret');
-    }
 }

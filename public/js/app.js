@@ -2046,7 +2046,19 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({});
+//
+//
+//
+//
+//
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  methods: {
+    logout: function logout() {
+      localStorage.clear();
+      this.$router.push('/login');
+    }
+  }
+});
 
 /***/ }),
 
@@ -2193,7 +2205,11 @@ try {
 
 
 window.axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
-window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+window.axios.defaults.headers.common = {
+  'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+  'X-Requested-With': 'XMLHttpRequest'
+}; // window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+
 /**
  * Echo exposes an expressive API for subscribing to channels and listening
  * for events that are broadcast by Laravel. Echo and event broadcasting
@@ -2207,6 +2223,8 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 //     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
 //     forceTLS: true
 // });
+
+window.axios.defaults.withCredentials = true;
 
 /***/ }),
 
@@ -2249,19 +2267,19 @@ var Upload = function Upload() {
   return __webpack_require__.e(/*! import() */ "resources_js_components_post_Upload_vue").then(__webpack_require__.bind(__webpack_require__, /*! ./components/post/Upload.vue */ "./resources/js/components/post/Upload.vue"));
 };
 
-var Secret = function Secret() {
-  return __webpack_require__.e(/*! import() */ "resources_js_components_auth_Secret_vue").then(__webpack_require__.bind(__webpack_require__, /*! ./components/auth/Secret.vue */ "./resources/js/components/auth/Secret.vue"));
-};
-
 var Welcome = function Welcome() {
   return __webpack_require__.e(/*! import() */ "resources_js_components_Welcome_vue").then(__webpack_require__.bind(__webpack_require__, /*! ./components/Welcome.vue */ "./resources/js/components/Welcome.vue"));
 };
 
+var User = function User() {
+  return __webpack_require__.e(/*! import() */ "resources_js_components_User_vue").then(__webpack_require__.bind(__webpack_require__, /*! ./components/User.vue */ "./resources/js/components/User.vue"));
+};
+
+var Login = function Login() {
+  return __webpack_require__.e(/*! import() */ "resources_js_components_user_Login_vue").then(__webpack_require__.bind(__webpack_require__, /*! ./components/user/Login.vue */ "./resources/js/components/user/Login.vue"));
+};
+
 var routes = [{
-  path: '/secret',
-  name: 'secret',
-  component: Secret
-}, {
   name: 'categoryList',
   path: '/',
   component: Welcome
@@ -2293,6 +2311,26 @@ var routes = [{
   name: 'userCreate',
   path: '/users/create',
   component: UserCreate
+}, {
+  name: 'login',
+  path: '/login',
+  component: Login,
+  meta: {
+    guestOnly: true
+  }
+}, {
+  name: "user",
+  path: '/user',
+  component: User,
+  beforeEnter: function beforeEnter(to, from, next) {
+    var auth = localStorage.getItem('auth');
+
+    if (auth) {
+      next();
+    } else {
+      next('/login');
+    }
+  }
 }];
 
 /***/ }),
@@ -37813,7 +37851,36 @@ var render = function() {
                     attrs: { "exact-active-class": "active", to: "/posts" }
                   },
                   [_vm._v("Posts")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "router-link",
+                  {
+                    staticClass: "nav-item nav-link",
+                    attrs: { "exact-active-class": "active", to: "/user" }
+                  },
+                  [_vm._v("User")]
                 )
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "ml-auto" },
+              [
+                _c(
+                  "router-link",
+                  {
+                    staticClass: "nav-item nav-link",
+                    attrs: { "exact-active-class": "active", to: "/login" }
+                  },
+                  [_vm._v("Login")]
+                ),
+                _vm._v(" "),
+                _c("a", { attrs: { href: "#" }, on: { click: _vm.logout } }, [
+                  _vm._v("Logout")
+                ])
               ],
               1
             )
@@ -53256,7 +53323,7 @@ Vue.compile = compileToFunctions;
 /******/ 		// This function allow to reference async chunks
 /******/ 		__webpack_require__.u = (chunkId) => {
 /******/ 			// return url for filenames not based on template
-/******/ 			if ({"resources_js_components_user_List_vue":1,"resources_js_components_user_Create_vue":1,"resources_js_components_user_Edit_vue":1,"resources_js_components_post_List_vue":1,"resources_js_components_post_Create_vue":1,"resources_js_components_post_Edit_vue":1,"resources_js_components_post_Upload_vue":1,"resources_js_components_auth_Secret_vue":1,"resources_js_components_Welcome_vue":1}[chunkId]) return "js/" + chunkId + ".js";
+/******/ 			if ({"resources_js_components_user_List_vue":1,"resources_js_components_user_Create_vue":1,"resources_js_components_user_Edit_vue":1,"resources_js_components_post_List_vue":1,"resources_js_components_post_Create_vue":1,"resources_js_components_post_Edit_vue":1,"resources_js_components_post_Upload_vue":1,"resources_js_components_Welcome_vue":1,"resources_js_components_User_vue":1,"resources_js_components_user_Login_vue":1}[chunkId]) return "js/" + chunkId + ".js";
 /******/ 			// return url for filenames based on template
 /******/ 			return undefined;
 /******/ 		};

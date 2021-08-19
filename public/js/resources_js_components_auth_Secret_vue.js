@@ -68,8 +68,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               case 0:
                 _context.next = 2;
                 return _this.axios.get('/sanctum/csrf-cookie').then(function (response) {
-                  _this.axios.post('/login', _this.formData).then(function (response) {
-                    _this.getSecrets();
+                  _this.axios.post('/api/login', _this.formData).then(function (response) {
+                    console.log('User signed in!');
                   })["catch"](function (error) {
                     return console.log(error);
                   }); // credentials didn't match
@@ -83,12 +83,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           }
         }, _callee);
       }))();
-    },
-    getSecrets: function getSecrets() {
-      axios.get('/api/secrets').then(function (response) {
-        return console.log(response);
-      });
-    }
+    } // getSecrets() {
+    //     axios.get('/api/secrets').then(response => this.secrets = response.data);
+    // }
+
   }
 });
 

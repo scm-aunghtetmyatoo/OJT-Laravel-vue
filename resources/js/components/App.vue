@@ -7,6 +7,11 @@
                     <div class="navbar-nav">
                         <router-link exact-active-class="active" to="/users" class="nav-item nav-link">Users</router-link>
                         <router-link exact-active-class="active" to="/posts" class="nav-item nav-link">Posts</router-link>
+                        <router-link exact-active-class="active" to="/user" class="nav-item nav-link">User</router-link>
+                    </div>
+                     <div class="ml-auto">
+                        <router-link exact-active-class="active" to="/login" class="nav-item nav-link">Login</router-link>
+                        <a href="#" @click="logout">Logout</a>
                     </div>
                 </div>
             </div>
@@ -22,6 +27,13 @@
 </template>
  
 <script>
-    export default {}
+    export default {
+        methods: {
+            logout() {
+                localStorage.clear();
+                this.$router.push('/login');
+            }
+        }
+    }
 </script>
 

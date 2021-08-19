@@ -18,5 +18,4 @@ Route::get('{any}', function () {
 })->where('any', '.*');
 
 
-Auth::routes();
 
