@@ -75,6 +75,8 @@ __webpack_require__.r(__webpack_exports__);
         email: this.email,
         password: this.password
       }).then(function (response) {
+        _this.$store.commit("LOGIN", true);
+
         localStorage.setItem("token", response.data.token);
 
         _this.$router.push({

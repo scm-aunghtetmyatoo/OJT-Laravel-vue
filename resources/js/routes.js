@@ -10,7 +10,6 @@ const Upload = () => import('./components/post/Upload.vue')
 
 const Welcome = () => import('./components/Welcome.vue')
 
-const User = () => import('./components/User.vue')
 const Login = () => import('./components/user/Login.vue')
 
 
@@ -28,7 +27,8 @@ export const routes = [
     {
         name: 'postList',
         path: '/posts',
-        component: PostList
+        component: PostList,
+        meta: { authOnly: true }
     },
     {
         name: 'postCreate',
@@ -68,21 +68,7 @@ export const routes = [
         component: Login,
         meta: { guestOnly: true }
     },
-    {
-        name: "user",
-        path: '/user',
-        component: User,
-        beforeEnter: (to, from, next) => {
-            
-            let auth = localStorage.getItem('auth');
-            if(auth){
-                next();
-            }else{
-                next('/login');
-            }
-
-        }
-    }
+    
 
     
 ]

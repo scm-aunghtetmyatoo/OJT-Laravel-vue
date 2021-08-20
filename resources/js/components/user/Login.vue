@@ -63,7 +63,7 @@ export default {
 					password: this.password
 				})
 				.then(response => {
-          
+            this.$store.commit("LOGIN", true);
              localStorage.setItem("token", response.data.token);
             this.$router.push({ name: "postList" });
 				}).catch(error => {
